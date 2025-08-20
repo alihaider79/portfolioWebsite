@@ -32,7 +32,7 @@ export default function Footer() {
             {/* Left side */}
             <div>
               <h3 className="text-white text-xl md:text-2xl font-semibold">
-                FAISAL YASIN
+                FAISAL YASEEN
               </h3>
               <p className="mt-2 text-sm text-white/70">
                 Crafting clean interfaces & delightful product experiences.

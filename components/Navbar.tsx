@@ -167,11 +167,11 @@ export default function Nav() {
                   className="w-30 h-10 rounded-full grid place-items-center font-bold"
                   style={{ backgroundColor: orange, color: "white" }}
                 >
-                  Faisal Yasin
+                  Faisal Yaseen
                 </div>
               </div>
 
-              <ul className="flex items-center gap-2">
+              <ul className="flex items-center gap-2 ">
                 {rightLinks.map((l) => {
                   const active = isRouteActive(l.href);
                   return (
@@ -203,7 +203,7 @@ export default function Nav() {
                   className="w-30 h-8 rounded-full grid place-items-center font-bold"
                   style={{ backgroundColor: orange, color: "#111" }}
                 >
-                  Faisal Yasin
+                  Faisal Yaseen
                 </div>
               </div>
               <button onClick={() => setOpen((s) => !s)} aria-label="Open menu">
