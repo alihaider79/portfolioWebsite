@@ -11,9 +11,9 @@ type Project = {
   subtitle?: string;
   tags: string[];
   year: string;
-  image: string; // poster/thumbnail
-  videoUrl?: string; // mp4/webm URL (replace with your own)
-  href: string; // case-study route
+  image: string;
+  videoUrl?: string;
+  href: string;
   featured?: boolean;
   description?: string;
 };
@@ -98,7 +98,6 @@ const PROJECTS: Project[] = [
 ];
 
 export default function ProjectsGallery() {
-  // --- Tag filtering ---
   const allTags = useMemo(() => {
     const set = new Set<string>(["All"]);
     PROJECTS.forEach((p) => p.tags.forEach((t) => set.add(t)));
@@ -111,10 +110,8 @@ export default function ProjectsGallery() {
     return PROJECTS.filter((p) => p.tags.includes(activeTag));
   }, [activeTag]);
 
-  // --- Modal state ---
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
-  // Lock body scroll while modal is open
   useEffect(() => {
     if (openIdx !== null) {
       const prev = document.body.style.overflow;
@@ -128,12 +125,12 @@ export default function ProjectsGallery() {
   return (
     <>
       {/* Header */}
-      <section className="pt-8 pb-6">
+      <section className="pt-8 pb-6 bg-white dark:bg-neutral-950 transition-colors">
         <div className="max-w-6xl mx-auto px-6">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-neutral-100">
             Selected <span style={{ color: ACCENT }}>Projects</span>
           </h1>
-          <p className="mt-2 text-gray-600">
+          <p className="mt-2 text-gray-600 dark:text-neutral-300">
             A curated set of product work across dashboards, design systems,
             onboarding flows, and research.
           </p>
@@ -142,7 +139,7 @@ export default function ProjectsGallery() {
             style={{ background: `linear-gradient(90deg, ${ACCENT}, #facc15)` }}
           />
 
-          {/* Chips (interactive) */}
+          {/* Chips */}
           <div className="mt-5 flex flex-wrap gap-2">
             {allTags.map((c) => {
               const active = c === activeTag;
@@ -150,10 +147,14 @@ export default function ProjectsGallery() {
                 <button
                   key={c}
                   onClick={() => setActiveTag(c)}
-                  className={`px-3 py-1.5 text-xs rounded-full border transition ${
-                    active ? "text-black" : "text-gray-600 hover:text-gray-900"
-                  }`}
+                  className={[
+                    "px-3 py-1.5 text-xs rounded-full border transition",
+                    active
+                      ? "text-black dark:text-neutral-900"
+                      : "text-gray-600 hover:text-gray-900 dark:text-neutral-300 dark:hover:text-white",
+                  ].join(" ")}
                   style={{
+                    color: "white",
                     borderColor: active ? ACCENT : "rgba(0,0,0,.12)",
                     background: active ? "rgba(242,138,46,.12)" : "transparent",
                   }}
@@ -167,7 +168,7 @@ export default function ProjectsGallery() {
       </section>
 
       {/* Grid */}
-      <section className="pb-16">
+      <section className="pb-16 bg-white dark:bg-neutral-950 transition-colors">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {filtered.map((p, idx) => (
@@ -192,9 +193,8 @@ export default function ProjectsGallery() {
   );
 }
 
-/* ----------------- Card (entire card clickable) ------------------ */
+/* ----------------- Card ------------------ */
 function Card({ p, onOpen }: { p: Project; onOpen: () => void }) {
-  // Make the whole article act like a button (with keyboard support)
   const onKey = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -209,8 +209,12 @@ function Card({ p, onOpen }: { p: Project; onOpen: () => void }) {
       onClick={onOpen}
       onKeyDown={onKey}
       aria-label={`Open ${p.title}`}
-      className={`group relative overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer
-        ${p.featured ? "md:col-span-2 xl:col-span-2" : ""}`}
+      className={[
+        "group relative overflow-hidden rounded-2xl cursor-pointer transition",
+        "border border-gray-200 bg-white shadow-sm hover:shadow-md",
+        "dark:border-white/10 dark:bg-neutral-900 dark:shadow-[0_0_0_1px_rgba(255,255,255,.06)]",
+        p.featured ? "md:col-span-2 xl:col-span-2" : "",
+      ].join(" ")}
     >
       {/* Media Poster */}
       <div className="relative">
@@ -226,7 +230,8 @@ function Card({ p, onOpen }: { p: Project; onOpen: () => void }) {
           {p.tags.slice(0, 2).map((t) => (
             <span
               key={t}
-              className="px-2.5 py-1 text-xs rounded-full bg-white/90 border border-gray-200 text-gray-800 backdrop-blur"
+              className="px-2.5 py-1 text-xs rounded-full bg-white/90 border border-gray-200 text-gray-800 backdrop-blur
+                         dark:bg-neutral-900/80 dark:border-white/10 dark:text-neutral-100"
             >
               {t}
             </span>
@@ -243,8 +248,12 @@ function Card({ p, onOpen }: { p: Project; onOpen: () => void }) {
       {/* Body */}
       <div className="p-5">
         <div className="flex items-center justify-between gap-4">
-          <h3 className="text-lg font-semibold text-gray-900">{p.title}</h3>
-          <span className="text-xs text-gray-500">{p.year}</span>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100">
+            {p.title}
+          </h3>
+          <span className="text-xs text-gray-500 dark:text-neutral-400">
+            {p.year}
+          </span>
         </div>
 
         <div className="mt-4 flex items-center justify-between">
@@ -252,17 +261,19 @@ function Card({ p, onOpen }: { p: Project; onOpen: () => void }) {
             {p.tags.slice(0, 3).map((t) => (
               <span
                 key={t}
-                className="px-2 py-0.5 text-[11px] rounded-full bg-gray-100 text-gray-700"
+                className="px-2 py-0.5 text-[11px] rounded-full bg-gray-100 text-gray-700
+                           dark:bg-neutral-800 dark:text-neutral-200"
               >
                 {t}
               </span>
             ))}
           </div>
 
-          {/* Preview pill (explicitly clickable too, though whole card opens) */}
+          {/* Preview pill */}
           <span
             onClick={onOpen}
-            className="inline-flex items-center gap-2 rounded-full bg-white/95 backdrop-blur border border-gray-200 px-3 py-1.5 text-xs text-gray-900 shadow-sm group-hover:scale-[1.03] transition"
+            className="inline-flex items-center gap-2 rounded-full bg-white/95 backdrop-blur border border-gray-200 px-3 py-1.5 text-xs text-gray-900 shadow-sm group-hover:scale-[1.03] transition
+                       dark:bg-neutral-900/90 dark:border-white/10 dark:text-neutral-100"
             title="Preview"
             role="button"
           >
@@ -274,7 +285,7 @@ function Card({ p, onOpen }: { p: Project; onOpen: () => void }) {
   );
 }
 
-/* ----------------- Medium Modal with animation ------------------ */
+/* ----------------- Modal (dark themed) ------------------ */
 function ProjectModal({
   project,
   onClose,
@@ -282,7 +293,6 @@ function ProjectModal({
   project: Project;
   onClose: () => void;
 }) {
-  // Fade+scale in on mount
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -296,86 +306,86 @@ function ProjectModal({
   };
 
   return (
-    <div className="bg-white">
+    <div
+      onClick={handleBackdrop}
+      className={`fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4
+                  transition-opacity duration-200 ${
+                    mounted ? "opacity-100" : "opacity-0"
+                  }`}
+      role="dialog"
+      aria-modal="true"
+    >
       <div
-        onClick={handleBackdrop}
-        className={`fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4
-        transition-opacity duration-200 ${
-          mounted ? "opacity-100" : "opacity-0"
-        }`}
-        role="dialog"
-        aria-modal="true"
+        className={`relative w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl
+                    bg-white text-gray-900 border border-gray-200
+                    dark:bg-neutral-900 dark:text-neutral-100 dark:border-white/10
+                    transform transition-all duration-200 ${
+                      mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"
+                    }`}
       >
-        <div
-          className={`relative w-full max-w-2xl rounded-2xl bg-white shadow-2xl overflow-hidden
-          transform transition-all duration-200 ${
-            mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"
-          }`}
-        >
-          {/* Header */}
-          <div className="px-6 pt-5 pb-4 border-b border-gray-200 flex items-start justify-between">
-            <div>
-              <h3 className="text-xl font-bold text-gray-800">
-                {project.title}
-              </h3>
-              {project.subtitle && (
-                <p className="text-sm text-gray-600 mt-0.5">
-                  {project.subtitle}
-                </p>
-              )}
-            </div>
-            <button
-              onClick={onClose}
-              aria-label="Close"
-              className="p-2 rounded-full hover:bg-gray-100 transition"
-            >
-              <X className="w-5 h-5 text-gray-500" />
-            </button>
-          </div>
-
-          {/* Media */}
-          <div className="bg-black">
-            {project.videoUrl ? (
-              <video
-                src={project.videoUrl}
-                poster={project.image}
-                controls
-                playsInline
-                autoPlay
-                className="w-full max-h-[60vh] object-contain rounded-t-xl"
-              />
-            ) : (
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full max-h-[60vh] object-contain rounded-t-xl"
-              />
-            )}
-          </div>
-
-          {/* Details */}
-          <div className="px-6 py-5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs text-gray-500">{project.year}</span>
-              <span className="text-gray-300">•</span>
-              <div className="flex flex-wrap gap-1.5">
-                {project.tags.map((t, i) => (
-                  <span
-                    key={i}
-                    className="px-2 py-0.5 text-[11px] rounded-full bg-gray-100 text-gray-700"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {project.description && (
-              <p className="mt-3 text-sm text-gray-700 leading-relaxed">
-                {project.description}
+        {/* Header */}
+        <div className="px-6 pt-5 pb-4 border-b border-gray-200 dark:border-white/10 flex items-start justify-between">
+          <div>
+            <h3 className="text-xl font-bold">{project.title}</h3>
+            {project.subtitle && (
+              <p className="text-sm text-gray-600 dark:text-neutral-300 mt-0.5">
+                {project.subtitle}
               </p>
             )}
           </div>
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-neutral-800 transition"
+          >
+            <X className="w-5 h-5 text-gray-500 dark:text-neutral-300" />
+          </button>
+        </div>
+
+        {/* Media */}
+        <div className="bg-black">
+          {project.videoUrl ? (
+            <video
+              src={project.videoUrl}
+              poster={project.image}
+              controls
+              playsInline
+              autoPlay
+              className="w-full max-h-[60vh] object-contain rounded-t-xl"
+            />
+          ) : (
+            <img
+              src={project.image}
+              alt={project.title}
+              className="w-full max-h-[60vh] object-contain rounded-t-xl"
+            />
+          )}
+        </div>
+
+        {/* Details */}
+        <div className="px-6 py-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs text-gray-500 dark:text-neutral-400">
+              {project.year}
+            </span>
+            <span className="text-gray-300 dark:text-neutral-600">•</span>
+            <div className="flex flex-wrap gap-1.5">
+              {project.tags.map((t, i) => (
+                <span
+                  key={i}
+                  className="px-2 py-0.5 text-[11px] rounded-full bg-gray-100 text-gray-700 dark:bg-neutral-800 dark:text-neutral-200"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {project.description && (
+            <p className="mt-3 text-sm text-gray-700 dark:text-neutral-300 leading-relaxed">
+              {project.description}
+            </p>
+          )}
         </div>
       </div>
     </div>

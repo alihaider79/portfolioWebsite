@@ -3,52 +3,36 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ThemeProvider } from "./themeprovider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Faisal Yaseen — Portfolio",
-  description: "Crafting clean interfaces & delightful product experiences.",
-  themeColor: "#ffffff", // stable browser UI color
-  other: { "color-scheme": "light" }, // hint UA controls to use light palette
+  title: "Faisals Portfolio",
+  description: "My portfolio site",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    // Force light mode regardless of OS setting
-    <html
-      lang="en"
-      className="light"
-      style={{ colorScheme: "light" }}
-      suppressHydrationWarning
-    >
-      <head>
-        {/* extra safety for some UAs */}
-        <meta name="color-scheme" content="light" />
-        <meta name="theme-color" content="#ffffff" />
-      </head>
-
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={[
-          geistSans.variable,
-          geistMono.variable,
-          "antialiased",
-          // lock base colors app-wide
-          "min-h-screen bg-white text-slate-900",
-        ].join(" ")}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased 
+                    min-h-screen bg-white text-slate-900 
+                    dark:bg-[#0b0f14] dark:text-slate-100`}
       >
-        <Navbar />
-        {children}
-        <Footer />
+        <ThemeProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
