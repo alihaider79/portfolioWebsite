@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Bold, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -19,6 +19,7 @@ const rightLinks = [
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const [activeHash, setActiveHash] = useState<string>("#home");
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const orange = "#F28A2E";
 
@@ -66,17 +67,14 @@ export default function Nav() {
 
     const updateActiveFromScroll = () => {
       ticking = false;
-
-      // Find the section whose top is closest to HEADER_OFFSET (>= 0 preferred)
       let bestHash = activeHash;
       let bestDist = Number.POSITIVE_INFINITY;
 
       for (const el of sections) {
         const rect = el.getBoundingClientRect();
         const dist = Math.abs(rect.top - HEADER_OFFSET);
-        // Prefer sections that are at/above the header line; if all below, closest wins
         const isAbove = rect.top - HEADER_OFFSET <= 1;
-        const score = isAbove ? dist * 0.9 : dist * 1.1; // small bias toward above
+        const score = isAbove ? dist * 0.9 : dist * 1.1;
         if (score < bestDist) {
           bestDist = score;
           bestHash = `#${el.id}`;
@@ -85,7 +83,6 @@ export default function Nav() {
 
       if (bestHash !== activeHash) {
         setActiveHash(bestHash);
-        // keep URL hash in sync without jump
         const url = new URL(window.location.href);
         if (url.hash !== bestHash) {
           history.replaceState(null, "", bestHash);
@@ -100,13 +97,11 @@ export default function Nav() {
       }
     };
 
-    // Also react to direct hash changes (e.g., back/forward)
     const onHashChange = () => {
       const h = window.location.hash || "#home";
       setActiveHash(h);
     };
 
-    // Initial sync (in case landing on /#services)
     onHashChange();
     updateActiveFromScroll();
 
@@ -117,6 +112,22 @@ export default function Nav() {
       window.removeEventListener("hashchange", onHashChange);
     };
   }, [hashLinks, pathname, activeHash]);
+
+  // -------- Glass effect when scrolled ----------
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 8);
+        ticking = false;
+      });
+    };
+    onScroll(); // initial
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const isRouteActive = (href: string) => href === pathname;
   const isHashActive = (href: string) =>
@@ -130,7 +141,15 @@ export default function Nav() {
         <div className="pt-3 md:pt-5">
           <div className="max-w-6xl mx-auto px-4">
             {/* Desktop */}
-            <div className="hidden md:flex items-center justify-between h-14 rounded-full bg-black text-white px-2 shadow-[0_8px_24px_rgba(0,0,0,.18)]">
+            <div
+              className={[
+                "hidden md:flex items-center justify-between h-14 px-2 rounded-full transition-all duration-300",
+                scrolled
+                  ? "backdrop-blur-md bg-black/60 border border-white/10 shadow-[0_8px_24px_rgba(0,0,0,.22)]"
+                  : "bg-black text-white shadow-[0_8px_24px_rgba(0,0,0,.18)]",
+                "text-white",
+              ].join(" ")}
+            >
               <ul className="flex items-center gap-2">
                 {leftLinks.map((l) => {
                   const onHome = pathname === "/";
@@ -164,14 +183,17 @@ export default function Nav() {
               {/* Logo */}
               <div className="flex items-center gap-2 select-none">
                 <div
-                  className="w-30 h-10 rounded-full grid place-items-center font-bold"
-                  style={{ backgroundColor: orange, color: "white" }}
+                  className="h-10 px-4 rounded-full grid place-items-center font-bold transition-colors"
+                  style={{
+                    backgroundColor: orange,
+                    color: scrolled ? "#111" : "white",
+                  }}
                 >
                   Faisal Yaseen
                 </div>
               </div>
 
-              <ul className="flex items-center gap-2 ">
+              <ul className="flex items-center gap-2">
                 {rightLinks.map((l) => {
                   const active = isRouteActive(l.href);
                   return (
@@ -197,52 +219,73 @@ export default function Nav() {
             </div>
 
             {/* Mobile */}
-            <div className="md:hidden flex items-center justify-between h-12 rounded-xl bg-black text-white px-3 shadow-[0_8px_20px_rgba(0,0,0,.18)]">
+            <div
+              className={[
+                "md:hidden flex items-center justify-between h-12 px-3 rounded-xl shadow-[0_8px_20px_rgba(0,0,0,.18)] transition-all duration-300",
+                scrolled
+                  ? "backdrop-blur-md bg-black/60 border border-white/10"
+                  : "bg-black",
+                "text-white",
+              ].join(" ")}
+            >
               <div className="flex items-center gap-2">
                 <div
-                  className="w-30 h-8 rounded-full grid place-items-center font-bold"
+                  className="h-8 px-3 rounded-full grid place-items-center font-bold"
                   style={{ backgroundColor: orange, color: "#111" }}
                 >
                   Faisal Yaseen
                 </div>
               </div>
-              <button onClick={() => setOpen((s) => !s)} aria-label="Open menu">
+              <button
+                onClick={() => setOpen((s) => !s)}
+                aria-label="Open menu"
+                aria-expanded={open}
+                className="rounded-lg p-1.5 hover:bg-white/10 transition"
+              >
                 <Menu />
               </button>
             </div>
 
-            {open && (
-              <div className="md:hidden mt-2 rounded-xl bg-black text-white divide-y divide-white/10 overflow-hidden">
-                {[...leftLinks, ...rightLinks].map((l) => {
-                  const onHome = pathname === "/";
-                  const isHash = l.href.startsWith("#");
-                  const hrefProp = isHash
-                    ? onHome
-                      ? l.href
-                      : `/${l.href}`
-                    : l.href;
-                  const active = isHash
-                    ? isHashActive(l.href)
-                    : isRouteActive(l.href);
-                  return (
-                    <Link
-                      key={l.label}
-                      href={hrefProp}
-                      onClick={handleNavClick(hrefProp)}
-                      className={`block px-4 py-3 ${
-                        active ? "" : "hover:bg-white/10"
-                      }`}
-                      style={active ? { color: orange } : {}}
-                    >
-                      {l.label}
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
+            {/* Mobile dropdown with slide/fade animation */}
+            <div
+              className={[
+                "md:hidden overflow-hidden rounded-xl mt-2 transition-all duration-300 origin-top",
+                open
+                  ? "opacity-100 scale-y-100 max-h-[480px]"
+                  : "opacity-0 scale-y-95 max-h-0 pointer-events-none",
+                "backdrop-blur-md bg-black/60 text-white border border-white/10",
+              ].join(" ")}
+            >
+              {[...leftLinks, ...rightLinks].map((l) => {
+                const onHome = pathname === "/";
+                const isHash = l.href.startsWith("#");
+                const hrefProp = isHash
+                  ? onHome
+                    ? l.href
+                    : `/${l.href}`
+                  : l.href;
+                const active = isHash
+                  ? isHashActive(l.href)
+                  : isRouteActive(l.href);
+                return (
+                  <Link
+                    key={l.label}
+                    href={hrefProp}
+                    onClick={handleNavClick(hrefProp)}
+                    className={`block px-4 py-3 transition ${
+                      active ? "" : "hover:bg-white/10"
+                    }`}
+                    style={active ? { color: orange } : {}}
+                  >
+                    {l.label}
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
       </header>
+
       {/* spacer for fixed navbar */}
       <div className="h-[76px] md:h-[92px]" />
     </>
