@@ -3,16 +3,28 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
+type HeroCSSVars = React.CSSProperties &
+  Record<"--dx" | "--dy" | "--tiltX" | "--tiltY" | "--angle", string>;
+
 export default function Hero() {
   const accent = "#F28A2E";
 
-  // --- Parallax for hero background ---
+  // Parallax for hero background
   const sectionRef = useRef<HTMLElement | null>(null);
   const [mounted, setMounted] = useState(false);
   const raf = useRef<number | null>(null);
 
-  // NEW: CTA hover state to drive the sliding pill
+  // CTA hover state to drive the sliding pill
   const [ctaHover, setCtaHover] = useState<"portfolio" | "hire">("portfolio");
+
+  // Initial CSS vars (typed; no `any`)
+  const heroVars: HeroCSSVars = {
+    "--dx": "0px",
+    "--dy": "0px",
+    "--tiltX": "0deg",
+    "--tiltY": "0deg",
+    "--angle": "180deg",
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -41,12 +53,11 @@ export default function Hero() {
     };
 
     const handleLeave = () => {
-      const el2 = sectionRef.current!;
-      el2.style.setProperty("--dx", `0px`);
-      el2.style.setProperty("--dy", `0px`);
-      el2.style.setProperty("--tiltX", `0deg`);
-      el2.style.setProperty("--tiltY", `0deg`);
-      el2.style.setProperty("--angle", `180deg`);
+      el.style.setProperty("--dx", `0px`);
+      el.style.setProperty("--dy", `0px`);
+      el.style.setProperty("--tiltX", `0deg`);
+      el.style.setProperty("--tiltY", `0deg`);
+      el.style.setProperty("--angle", `180deg`);
     };
 
     el.addEventListener("mousemove", handleMove, { passive: true });
@@ -62,13 +73,7 @@ export default function Hero() {
     <section
       id="home"
       ref={sectionRef}
-      style={{
-        ["--dx" as any]: "0px",
-        ["--dy" as any]: "0px",
-        ["--tiltX" as any]: "0deg",
-        ["--tiltY" as any]: "0deg",
-        ["--angle" as any]: "180deg",
-      }}
+      style={heroVars}
       className="relative overflow-hidden will-change-transform"
     >
       {/* background blobs */}
@@ -177,7 +182,7 @@ export default function Hero() {
                       <span
                         className="pointer-events-none absolute top-1.5 md:top-2 bottom-1.5 md:bottom-2 left-1.5 md:left-2 rounded-full transition-transform duration-300 ease-out"
                         style={{
-                          width: "calc(50% - 0.5rem)", // keeps pill inside container
+                          width: "calc(50% - 0.5rem)",
                           backgroundColor: accent,
                           transform:
                             ctaHover === "hire"
