@@ -11,7 +11,7 @@ const leftLinks = [
 ];
 
 const rightLinks = [
-  { href: "/resume", label: "Resume" },
+  { href: "/journey", label: "My Journey" },
   { href: "/project", label: "Project" },
   { href: "/contact", label: "Contact" },
 ];
