@@ -89,8 +89,11 @@ export default function JourneyPage() {
     <main className="bg-white">
       {/* Header */}
       <section className="max-w-6xl mx-auto px-4 pt-14 pb-10 text-center">
-        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">
-          My <span style={{ color: accent }}>Journey</span>
+        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-Black transition-colors duration-200">
+          My{" "}
+          <span className="text-[#F28A2E]  transition-colors duration-200">
+            Journey
+          </span>
         </h1>
         <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
           A story about experiments, momentum, and teams who helped along the
