@@ -1,5 +1,15 @@
+"use client";
 import Link from "next/link";
-import { Mail, Phone, MapPin, Instagram, Facebook, Clock } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Instagram,
+  Facebook,
+  Clock,
+  Youtube,
+  MessageCircle,
+} from "lucide-react";
 
 const ACCENT = "#F28A2E";
 
@@ -68,10 +78,9 @@ export default function ContactPage() {
 
                 <div className="mt-4 flex items-center gap-2 text-gray-700">
                   <MapPin className="w-4 h-4 text-gray-600" />
-                  Mumbai, India
+                  Rawalpindi, Pakistan
                 </div>
 
-                {/* Add subtle tagline to balance spacing */}
                 <p className="mt-3 text-sm italic text-gray-500">
                   “Let’s connect and make ideas happen.”
                 </p>
@@ -81,27 +90,33 @@ export default function ContactPage() {
               <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-4">
                 <InfoTile
                   title="Email"
-                  value="you@example.com"
-                  href="mailto:you@example.com"
+                  value="fkibupoto@gmail.com"
+                  href="mailto:fkibupoto@gmail.com"
                   icon={<Mail className="w-4 h-4" />}
                 />
                 <InfoTile
-                  title="Phone"
-                  value="+91 98765 43210"
-                  href="tel:+919876543210"
-                  icon={<Phone className="w-4 h-4" />}
+                  title="WhatsApp"
+                  value="+92 336 3108910"
+                  href="https://wa.me/923363108910"
+                  icon={<MessageCircle className="w-4 h-4" />}
                 />
                 <InfoTile
                   title="Instagram"
-                  value="@yourhandle"
-                  href="https://instagram.com"
+                  value="@edfy.edits"
+                  href="https://www.instagram.com/edfy.edits/"
                   icon={<Instagram className="w-4 h-4" />}
                 />
                 <InfoTile
-                  title="Facebook"
-                  value="fb.com/yourprofile"
-                  href="https://facebook.com"
-                  icon={<Facebook className="w-4 h-4" />}
+                  title="Fiverr"
+                  value="fiverr.com/faisalibupoto"
+                  href="https://www.fiverr.com/sellers/faisalibupoto"
+                  icon={<Facebook className="w-4 h-4 " />} // placeholder, Fiverr icon not in lucide
+                />
+                <InfoTile
+                  title="YouTube"
+                  value="EDFY Edits"
+                  href="https://www.youtube.com/channel/UCDjsQfB2OnsTP9p6Ld_lccQ"
+                  icon={<Youtube className="w-4 h-4" />}
                 />
               </div>
             </div>
@@ -129,7 +144,7 @@ function InfoTile({
     <div className="relative rounded-xl border border-gray-200 bg-white p-4 shadow-sm hover:shadow-md transition">
       <div
         className="absolute left-0 top-0 h-full w-1 rounded-l-xl"
-        style={{ background: `linear-gradient(${90}deg, ${ACCENT}, #facc15)` }}
+        style={{ background: `linear-gradient(90deg, ${ACCENT}, #facc15)` }}
       />
       <div className="pl-3">
         <div className="flex items-center gap-2 text-gray-900 font-medium">
@@ -139,6 +154,8 @@ function InfoTile({
         {href ? (
           <Link
             href={href}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-1 block text-sm text-gray-600 hover:text-black transition"
           >
             {value}

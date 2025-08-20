@@ -211,7 +211,7 @@ export default function Hero() {
 
                       {/* Hire me */}
                       <a
-                        href="mailto:your@email.com"
+                        href="/contact"
                         onMouseEnter={() => setCtaHover("hire")}
                         className="relative z-10 rounded-full px-5 md:px-7 py-2 md:py-3 text-center font-medium flex items-center justify-center transition-transform duration-200 hover:-translate-y-0.5"
                         style={{

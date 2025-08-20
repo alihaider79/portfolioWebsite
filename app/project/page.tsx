@@ -296,80 +296,86 @@ function ProjectModal({
   };
 
   return (
-    <div
-      onClick={handleBackdrop}
-      className={`fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4
+    <div className="bg-white">
+      <div
+        onClick={handleBackdrop}
+        className={`fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4
         transition-opacity duration-200 ${
           mounted ? "opacity-100" : "opacity-0"
         }`}
-      role="dialog"
-      aria-modal="true"
-    >
-      <div
-        className={`relative w-full max-w-2xl rounded-2xl bg-white shadow-2xl overflow-hidden
+        role="dialog"
+        aria-modal="true"
+      >
+        <div
+          className={`relative w-full max-w-2xl rounded-2xl bg-white shadow-2xl overflow-hidden
           transform transition-all duration-200 ${
             mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"
           }`}
-      >
-        {/* Header */}
-        <div className="px-6 pt-5 pb-4 border-b border-gray-200 flex items-start justify-between">
-          <div>
-            <h3 className="text-xl font-bold text-gray-800">{project.title}</h3>
-            {project.subtitle && (
-              <p className="text-sm text-gray-600 mt-0.5">{project.subtitle}</p>
+        >
+          {/* Header */}
+          <div className="px-6 pt-5 pb-4 border-b border-gray-200 flex items-start justify-between">
+            <div>
+              <h3 className="text-xl font-bold text-gray-800">
+                {project.title}
+              </h3>
+              {project.subtitle && (
+                <p className="text-sm text-gray-600 mt-0.5">
+                  {project.subtitle}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={onClose}
+              aria-label="Close"
+              className="p-2 rounded-full hover:bg-gray-100 transition"
+            >
+              <X className="w-5 h-5 text-gray-500" />
+            </button>
+          </div>
+
+          {/* Media */}
+          <div className="bg-black">
+            {project.videoUrl ? (
+              <video
+                src={project.videoUrl}
+                poster={project.image}
+                controls
+                playsInline
+                autoPlay
+                className="w-full max-h-[60vh] object-contain rounded-t-xl"
+              />
+            ) : (
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full max-h-[60vh] object-contain rounded-t-xl"
+              />
             )}
           </div>
-          <button
-            onClick={onClose}
-            aria-label="Close"
-            className="p-2 rounded-full hover:bg-gray-100 transition"
-          >
-            <X className="w-5 h-5 text-gray-500" />
-          </button>
-        </div>
 
-        {/* Media */}
-        <div className="bg-black">
-          {project.videoUrl ? (
-            <video
-              src={project.videoUrl}
-              poster={project.image}
-              controls
-              playsInline
-              autoPlay
-              className="w-full max-h-[60vh] object-contain rounded-t-xl"
-            />
-          ) : (
-            <img
-              src={project.image}
-              alt={project.title}
-              className="w-full max-h-[60vh] object-contain rounded-t-xl"
-            />
-          )}
-        </div>
-
-        {/* Details */}
-        <div className="px-6 py-5">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs text-gray-500">{project.year}</span>
-            <span className="text-gray-300">•</span>
-            <div className="flex flex-wrap gap-1.5">
-              {project.tags.map((t, i) => (
-                <span
-                  key={i}
-                  className="px-2 py-0.5 text-[11px] rounded-full bg-gray-100 text-gray-700"
-                >
-                  {t}
-                </span>
-              ))}
+          {/* Details */}
+          <div className="px-6 py-5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs text-gray-500">{project.year}</span>
+              <span className="text-gray-300">•</span>
+              <div className="flex flex-wrap gap-1.5">
+                {project.tags.map((t, i) => (
+                  <span
+                    key={i}
+                    className="px-2 py-0.5 text-[11px] rounded-full bg-gray-100 text-gray-700"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {project.description && (
-            <p className="mt-3 text-sm text-gray-700 leading-relaxed">
-              {project.description}
-            </p>
-          )}
+            {project.description && (
+              <p className="mt-3 text-sm text-gray-700 leading-relaxed">
+                {project.description}
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>
