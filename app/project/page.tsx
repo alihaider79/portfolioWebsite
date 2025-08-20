@@ -150,11 +150,10 @@ export default function ProjectsGallery() {
                   className={[
                     "px-3 py-1.5 text-xs rounded-full border transition",
                     active
-                      ? "text-black dark:text-neutral-900"
+                      ? "text-black dark:text-white"
                       : "text-gray-600 hover:text-gray-900 dark:text-neutral-300 dark:hover:text-white",
                   ].join(" ")}
                   style={{
-                    color: "white",
                     borderColor: active ? ACCENT : "rgba(0,0,0,.12)",
                     background: active ? "rgba(242,138,46,.12)" : "transparent",
                   }}
