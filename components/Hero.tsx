@@ -1,33 +1,125 @@
-import { ArrowRight } from "lucide-react";
+"use client";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 export default function Hero() {
   const accent = "#F28A2E";
 
+  // --- Parallax for hero background ---
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const raf = useRef<number | null>(null);
+
+  // NEW: CTA hover state to drive the sliding pill
+  const [ctaHover, setCtaHover] = useState<"portfolio" | "hire">("portfolio");
+
+  useEffect(() => {
+    setMounted(true);
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const handleMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      const relX = (e.clientX - rect.left) / rect.width;
+      const relY = (e.clientY - rect.top) / rect.height;
+
+      if (raf.current) cancelAnimationFrame(raf.current);
+      raf.current = requestAnimationFrame(() => {
+        const dx = (relX - 0.5) * 26;
+        const dy = (relY - 0.5) * 26;
+        const tiltX = (relY - 0.5) * -2.2;
+        const tiltY = (relX - 0.5) * 2.2;
+        const angle = 180 + (relX - 0.5) * 25 + (relY - 0.5) * 25;
+
+        el.style.setProperty("--dx", `${dx}px`);
+        el.style.setProperty("--dy", `${dy}px`);
+        el.style.setProperty("--tiltX", `${tiltX}deg`);
+        el.style.setProperty("--tiltY", `${tiltY}deg`);
+        el.style.setProperty("--angle", `${angle}deg`);
+      });
+    };
+
+    const handleLeave = () => {
+      const el2 = sectionRef.current!;
+      el2.style.setProperty("--dx", `0px`);
+      el2.style.setProperty("--dy", `0px`);
+      el2.style.setProperty("--tiltX", `0deg`);
+      el2.style.setProperty("--tiltY", `0deg`);
+      el2.style.setProperty("--angle", `180deg`);
+    };
+
+    el.addEventListener("mousemove", handleMove, { passive: true });
+    el.addEventListener("mouseleave", handleLeave);
+    return () => {
+      el.removeEventListener("mousemove", handleMove);
+      el.removeEventListener("mouseleave", handleLeave);
+      if (raf.current) cancelAnimationFrame(raf.current);
+    };
+  }, []);
+
   return (
-    <section id="home" className="relative overflow-hidden">
-      {/* background accents */}
+    <section
+      id="home"
+      ref={sectionRef}
+      style={{
+        ["--dx" as any]: "0px",
+        ["--dy" as any]: "0px",
+        ["--tiltX" as any]: "0deg",
+        ["--tiltY" as any]: "0deg",
+        ["--angle" as any]: "180deg",
+      }}
+      className="relative overflow-hidden will-change-transform"
+    >
+      {/* background blobs */}
       <div
-        className="pointer-events-none absolute -top-24 -left-16 h-72 w-72 rounded-full blur-3xl"
+        className="pointer-events-none absolute -top-24 -left-16 h-72 w-72 rounded-full blur-3xl transition-transform duration-200"
         style={{
+          transform:
+            "translate3d(calc(var(--dx) * -0.35), calc(var(--dy) * -0.35), 0)",
           background:
             "radial-gradient(closest-side, rgba(242,138,46,.18), transparent 70%)",
         }}
       />
       <div
-        className="pointer-events-none absolute -bottom-20 -right-16 h-72 w-72 rounded-full blur-3xl"
+        className="pointer-events-none absolute -bottom-20 -right-16 h-72 w-72 rounded-full blur-3xl transition-transform duration-200"
         style={{
+          transform:
+            "translate3d(calc(var(--dx) * 0.35), calc(var(--dy) * 0.35), 0)",
           background:
             "radial-gradient(closest-side, rgba(99,102,241,.18), transparent 70%)",
         }}
       />
 
-      <div className="max-w-6xl mx-auto px-4 pt-10 md:pt-14 pb-10">
-        {/* kicker + headline */}
+      {/* conic wash */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 opacity-60"
+        style={{
+          background:
+            "conic-gradient(from var(--angle) at 50% 50%, rgba(242,138,46,.06), rgba(168,85,247,.06), rgba(99,102,241,.06), rgba(242,138,46,.06))",
+          transition: "opacity .4s ease",
+        }}
+      />
+
+      <div
+        className={[
+          "max-w-6xl mx-auto px-4",
+          mounted
+            ? "pt-10 md:pt-14 pb-10 opacity-100 translate-y-0"
+            : "pt-10 md:pt-14 pb-10 opacity-0 translate-y-2",
+          "transition-all duration-700",
+        ].join(" ")}
+        style={{
+          transform:
+            "perspective(1200px) rotateX(var(--tiltX)) rotateY(var(--tiltY))",
+          transformStyle: "preserve-3d",
+        }}
+      >
+        {/* headline */}
         <div className="text-center">
           <span className="inline-flex items-center px-4 py-1 rounded-full text-xs md:text-sm border border-black/10 bg-white/70 backdrop-blur">
             New work dropping soon
           </span>
-
           <h1 className="mt-4 font-extrabold leading-tight">
             <span className="block text-[34px] md:text-[56px]">
               Crafting <span style={{ color: accent }}>clean</span> & clever
@@ -39,10 +131,10 @@ export default function Hero() {
           </h1>
         </div>
 
-        {/* main content row */}
-        <div className="mt-8 grid md:grid-cols-[1fr_auto_1fr] items-center gap-8">
-          {/* left: quick stats */}
-          <div className="hidden md:flex justify-end">
+        {/* content row (fixed center track on desktop) */}
+        <div className="mt-8 grid md:grid-cols-[1fr_420px_1fr] items-center gap-8">
+          {/* left box */}
+          <div className="hidden md:flex justify-end self-center">
             <div className="rounded-2xl border border-black/10 bg-white/70 backdrop-blur p-5 w-[260px]">
               <p className="text-sm text-black/60">Selected highlights</p>
               <ul className="mt-3 space-y-2 text-sm">
@@ -62,53 +154,79 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* center: photo card with polygon mask */}
+          {/* center image with sliding-pill CTA */}
           <div className="relative">
-            <div className="absolute -z-10 inset-0 -m-8 bg-[conic-gradient(from_180deg_at_50%_50%,rgba(242,138,46,.10),rgba(168,85,247,.10),rgba(99,102,241,.10),rgba(242,138,46,.10))] blur-2xl rounded-[2rem]" />
-            <div className="rounded-[1.75rem] p-[1.5px] bg-gradient-to-tr from-orange-500/50 via-fuchsia-500/50 to-indigo-500/50">
-              <div className="rounded-[1.65rem] bg-white/80 backdrop-blur-md p-3">
-                {/* image mask */}
-                <div
-                  className="relative w-[280px] h-[340px] md:w-[360px] md:h-[440px] mx-auto overflow-hidden"
-                  style={{
-                    clipPath:
-                      "polygon(12% 0, 88% 0, 100% 12%, 100% 88%, 88% 100%, 12% 100%, 0 88%, 0 12%)",
-                    borderRadius: "1.25rem",
-                  }}
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1200&auto=format&fit=crop"
+            <div className="mx-auto w-[300px] md:w-[420px] shrink-0 rounded-[1.75rem] p-[1px] md:p-[1.5px] bg-gradient-to-tr from-orange-500/50 via-fuchsia-500/50 to-indigo-500/50">
+              <div className="rounded-[1.6rem] bg-white/80 backdrop-blur-md p-2 md:p-3">
+                <div className="relative h-[420px] md:h-[520px] rounded-[1.1rem] overflow-hidden">
+                  <Image
+                    src="/pic.jpeg"
                     alt="Profile"
-                    className="w-full h-full object-cover"
-                    loading="eager"
+                    fill
+                    className="object-cover [object-position:50%_12%]"
+                    priority
                   />
-                </div>
 
-                {/* ctas */}
-                <div className="mt-4 flex items-center justify-center gap-2">
-                  <a
-                    href="#portfolio"
-                    className="px-5 py-2 rounded-full text-sm font-medium text-white"
-                    style={{
-                      backgroundColor: accent,
-                      boxShadow: "0 8px 22px rgba(242,138,46,.30)",
-                    }}
-                  >
-                    View Portfolio
-                  </a>
-                  <a
-                    href="#contact"
-                    className="px-5 py-2 rounded-full text-sm font-medium bg-black/5 hover:bg-black/10 transition"
-                  >
-                    Hire Me
-                  </a>
+                  {/* GLASS PILL — sliding orange highlight between buttons */}
+                  <div className="absolute inset-x-3 md:inset-x-6 bottom-3 md:bottom-5 flex justify-center">
+                    <div
+                      className="relative grid grid-cols-2 items-stretch w-full max-w-md rounded-full p-1.5 md:p-2 border border-white/60 bg-white/20 backdrop-blur-xl transition-all shadow-[0_8px_22px_rgba(0,0,0,.18)] hover:shadow-[0_12px_28px_rgba(242,138,46,.35)] overflow-hidden"
+                      onMouseLeave={() => setCtaHover("portfolio")}
+                    >
+                      {/* sliding highlight (exact half of container) */}
+                      <span
+                        className="pointer-events-none absolute top-1.5 md:top-2 bottom-1.5 md:bottom-2 left-1.5 md:left-2 rounded-full transition-transform duration-300 ease-out"
+                        style={{
+                          width: "calc(50% - 0.5rem)", // keeps pill inside container
+                          backgroundColor: accent,
+                          transform:
+                            ctaHover === "hire"
+                              ? "translateX(100%)"
+                              : "translateX(0%)",
+                          boxShadow:
+                            "inset 0 0 0 1px rgba(255,255,255,.45), 0 8px 18px rgba(242,138,46,.35)",
+                        }}
+                      />
+
+                      {/* Portfolio */}
+                      <a
+                        href="/project"
+                        onMouseEnter={() => setCtaHover("portfolio")}
+                        className="relative z-10 rounded-full px-5 md:px-7 py-2 md:py-3 text-center font-semibold flex items-center justify-center gap-2 transition-transform duration-200 hover:-translate-y-0.5"
+                        style={{
+                          color:
+                            ctaHover === "portfolio"
+                              ? "#fff"
+                              : "rgba(255,255,255,.95)",
+                        }}
+                      >
+                        <span className="text-base md:text-lg">Portfolio</span>
+                        <ArrowUpRight className="size-4 md:size-5" />
+                      </a>
+
+                      {/* Hire me */}
+                      <a
+                        href="mailto:your@email.com"
+                        onMouseEnter={() => setCtaHover("hire")}
+                        className="relative z-10 rounded-full px-5 md:px-7 py-2 md:py-3 text-center font-medium flex items-center justify-center transition-transform duration-200 hover:-translate-y-0.5"
+                        style={{
+                          color:
+                            ctaHover === "hire"
+                              ? "#fff"
+                              : "rgba(255,255,255,.95)",
+                        }}
+                      >
+                        <span className="text-base md:text-lg">Hire me</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* right: testimonial chip */}
-          <div className="hidden md:flex">
+          {/* right testimonial */}
+          <div className="hidden md:flex self-center">
             <div className="rounded-2xl border border-black/10 bg-white/80 backdrop-blur p-5 w-[260px]">
               <p className="text-sm">
                 “Thoughtful research and crisp UI.{" "}
@@ -121,7 +239,7 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* slim meta row */}
+        {/* footer meta */}
         <div className="mt-8 flex items-center justify-center gap-4 text-xs md:text-sm text-black/60">
           <span className="inline-flex items-center gap-2">
             <span
@@ -136,10 +254,10 @@ export default function Hero() {
           <span>Based in Mumbai</span>
         </div>
 
-        {/* micro CTA */}
+        {/* bottom CTA */}
         <div className="mt-4 flex justify-center">
           <a
-            href="#project"
+            href="/project"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border border-black/10 hover:bg-black/5 transition"
           >
             Explore projects <ArrowRight size={16} />

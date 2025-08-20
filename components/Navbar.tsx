@@ -230,7 +230,7 @@ export default function Nav() {
             >
               <div className="flex items-center gap-2">
                 <div
-                  className="h-8 px-3 rounded-full grid place-items-center font-bold"
+                  className="h-8 px-3 rounded-xl grid place-items-center font-bold"
                   style={{ backgroundColor: orange, color: "#111" }}
                 >
                   Faisal Yaseen
