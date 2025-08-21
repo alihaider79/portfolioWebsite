@@ -41,7 +41,7 @@ export default function Footer() {
                 FAISAL YASEEN
               </h3>
               <p className="mt-2 text-sm text-white/70">
-                Crafting clean interfaces & delightful product experiences.
+                Video Editor & Motion Designer
               </p>
 
               {/* Connect */}
@@ -123,8 +123,7 @@ export default function Footer() {
 
           {/* Divider */}
           <div className="mt-8 border-t border-white/10 pt-6 text-center text-[12px] text-white/50">
-            © {new Date().getFullYear()} Faisal Yaseen. Built with Next.js &
-            Tailwind CSS.
+            © {new Date().getFullYear()} Faisal Yaseen.
           </div>
         </div>
       </div>

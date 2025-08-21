@@ -11,30 +11,31 @@ const ACCENT = "#F28A2E";
 
 const DATA: Item[] = [
   {
-    company: "Cognizant",
-    city: "Mumbai",
-    start: "Sep 2016",
-    end: "Jul 2020",
-    role: "Experience Designer",
+    company: "YouTube Content Creator",
+    city: "Remote",
+    start: "Jan 2019",
+    end: "Dec 2022",
+    role: "Video Creator & Editor",
     blurb:
-      "Enterprise dashboards, scalable design systems, and smoother collaboration.",
+      "Creating engaging video content on YouTube, focusing on storytelling and audience connection.",
   },
   {
-    company: "Sugee Pvt Limited",
-    city: "Mumbai",
-    start: "Sep 2020",
-    end: "Jul 2023",
-    role: "UI/UX Designer",
+    company: "Mavera",
+    city: "Remote",
+    start: "Sep 2024",
+    end: "Oct 2024",
+    role: "Motion Designer & Animator",
     blurb:
-      "User journeys, onboarding optimization, and usability testing that lifted adoption.",
+      "Crafting dynamic motion graphics and animations for a cutting-edge AI platform.",
   },
   {
-    company: "Cinetstox",
-    city: "Mumbai",
-    start: "Sep 2023",
-    role: "Lead UX Designer",
+    company: "Freelance Video Editor",
+    city: "Remote",
+    start: "Jan 2021",
+    end: "Present",
+    role: "Short-Form & YouTube Editor",
     blurb:
-      "UX strategy, mentoring, and rapid experiments shipping high-quality work.",
+      "Editing short-form content and YouTube videos, enhancing viewer engagement through creative storytelling.",
   },
 ];
 
@@ -48,7 +49,8 @@ export default function Experience() {
             My <span style={{ color: ACCENT }}>Work Experience</span>
           </h2>
           <p className="mt-2 text-gray-500">
-            Horizontal timeline — mobile scrolls
+            A journey through my professional roles, showcasing my growth and
+            contributions in the field of video editing and motion design.
           </p>
         </div>
 

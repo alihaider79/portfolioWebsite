@@ -127,12 +127,13 @@ export default function Hero() {
             New work dropping soon
           </span>
           <h1 className="mt-4 font-extrabold leading-tight text-gray-900 dark:text-white">
-            <span className="block text-[34px] md:text-[56px]">
-              Crafting <span style={{ color: ACCENT }}>clean</span> & clever
-              experiences
+            <span className="block text-[20px] md:text-[34px]">
+              Stand-Out <span style={{ color: ACCENT }}>Videos</span> That Turn
+              Scrollers Into Customers
             </span>
-            <span className="block text-[20px] md:text-[22px] text-black/70 dark:text-white/70 font-medium mt-1">
-              Product Designer focused on outcomes, clarity, and delight.
+            <span className="block text-[14px] md:text-[18px] text-black/70 dark:text-white/70 font-medium mt-1">
+              I help brands and creators tell tighter stories with cinematic
+              edits, punchy pacing, and scroll-stopping hooks.
             </span>
           </h1>
         </div>
@@ -147,16 +148,16 @@ export default function Hero() {
               </p>
               <ul className="mt-3 space-y-2 text-sm">
                 <li className="flex items-center justify-between text-gray-800 dark:text-white/90">
-                  <span>Projects</span>{" "}
-                  <span className="font-semibold">120+</span>
+                  <span>Edited Video</span>{" "}
+                  <span className="font-semibold">300+</span>
                 </li>
                 <li className="flex items-center justify-between text-gray-800 dark:text-white/90">
-                  <span>Avg. NPS</span>{" "}
-                  <span className="font-semibold">9.3</span>
+                  <span>Avg. Retention Boost</span>{" "}
+                  <span className="font-semibold">35%</span>
                 </li>
                 <li className="flex items-center justify-between text-gray-800 dark:text-white/90">
-                  <span>Case studies</span>{" "}
-                  <span className="font-semibold">18</span>
+                  <span>Happy Clients </span>{" "}
+                  <span className="font-semibold">50+</span>
                 </li>
               </ul>
             </div>
@@ -247,11 +248,15 @@ export default function Hero() {
           <div className="hidden md:flex self-center">
             <div className="rounded-2xl border border-black/10 bg-white/80 backdrop-blur p-5 w-[260px] dark:border-white/10 dark:bg-white/10">
               <p className="text-sm text-gray-900 dark:text-white">
-                “Thoughtful research and crisp UI.{" "}
-                <span className="font-semibold">KPIs moved in 6 weeks</span>.”
+                “Good job, that was a brilliant move to re-edit the clip.{" "}
+                <span className="font-semibold">
+                  {" "}
+                  where I’m teaching the same thing haha, LOVED IT!
+                </span>
+                ”
               </p>
               <div className="mt-3 text-xs text-black/60 dark:text-white/60">
-                — Product Lead, Fintech
+                — Saifullah Khan, The Editing Skool
               </div>
             </div>
           </div>

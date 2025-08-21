@@ -1,7 +1,8 @@
 "use client";
-
+import Link from "next/link";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 
 type Service = {
   title: string;
@@ -14,25 +15,25 @@ const ACCENT = "#F28A2E";
 
 const SERVICES: Service[] = [
   {
-    title: "UI/UX Design",
-    blurb: "Research → flows → hi-fi UI. Design systems and polished handoff.",
-    tag: "Product",
-    image:
-      "https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=1600&auto=format&fit=crop",
+    title: "Reels/Shorts",
+    blurb:
+      "Short, impactful videos that capture attention and drive engagement across social platforms.",
+    tag: "Social",
+    image: "/short3.jpeg",
   },
   {
-    title: "Web Design",
-    blurb: "Fast, responsive marketing sites with crisp storytelling.",
-    tag: "Web",
-    image:
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1600&auto=format&fit=crop",
+    title: "Animated Videos",
+    blurb:
+      "Custom animations that bring your ideas to life with clarity and impact.",
+    tag: "Animation",
+    image: "/animation1.jpg",
   },
   {
-    title: "Landing Pages",
-    blurb: "High-converting landers ready for A/B tests and analytics.",
-    tag: "Growth",
-    image:
-      "https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=1600&auto=format&fit=crop",
+    title: "Graphic Designing",
+    blurb:
+      "Visuals that captivate and communicate your brand's essence effectively.",
+    tag: "Design",
+    image: "/graphic4.jpg",
   },
 ];
 
@@ -101,8 +102,8 @@ export default function Services() {
             My <span style={{ color: ACCENT }}>Services</span>
           </h2>
           <p className="text-white/70 max-w-2xl">
-            A curated set of offerings where strategy meets craft. Designed for
-            clarity, speed, and measurable outcomes.
+            A set of video editing services designed to boost retention,
+            engagement, and results.
           </p>
         </div>
 
@@ -155,7 +156,7 @@ function ServiceCard({ s }: { s: Service }) {
   return (
     <article
       className="group relative rounded-[26px] p-[1.25px] bg-gradient-to-tr from-white/15 via-white/5 to-white/15
-                 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,.35)] overflow-hidden"
+             border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,.35)] overflow-hidden"
     >
       <div className="relative rounded-[25px] overflow-hidden bg-white/5 backdrop-blur-sm">
         <div className="relative">
@@ -175,14 +176,14 @@ function ServiceCard({ s }: { s: Service }) {
           </h3>
           <p className="text-white/70 text-sm mt-1">{s.blurb}</p>
           <div className="mt-4 flex items-center justify-end">
-            <a
-              href="#"
+            <Link
+              href="/project"
               className="size-11 grid place-items-center rounded-full bg-[#0e1625] text-white border border-white/15
-                         hover:scale-105 transition"
+                     hover:scale-105 transition"
               title="Open"
             >
               <ArrowUpRight />
-            </a>
+            </Link>
           </div>
         </div>
       </div>
