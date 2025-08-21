@@ -445,14 +445,14 @@ function Testimonials({ accent }: { accent: string }) {
         <button
           onClick={goLeft}
           aria-label="Previous testimonial"
-          className="hidden lg:flex absolute left-2 top-1/2 -translate-y-1/2 size-10 rounded-full border border-white/60 bg-white/30 backdrop-blur-md shadow hover:bg-white/50 transition"
+          className="hidden lg:flex absolute left-2 top-1/2 -translate-y-1/2 size-10 rounded-full border border-white/60 bg-white/30 backdrop-blur-md shadow hover:bg-white/50 dark:text-black transition"
         >
           <ChevronLeft className="m-auto" />
         </button>
         <button
           onClick={goRight}
           aria-label="Next testimonial"
-          className="hidden lg:flex absolute right-2 top-1/2 -translate-y-1/2 size-10 rounded-full border border-white/60 bg-white/30 backdrop-blur-md shadow hover:bg-white/50 transition"
+          className="hidden lg:flex absolute right-2 top-1/2 -translate-y-1/2 size-10 rounded-full border border-white/60 bg-white/30 backdrop-blur-md shadow hover:bg-white/50 dark:text-black transition"
         >
           <ChevronRight className="m-auto" />
         </button>
@@ -485,7 +485,7 @@ function TestimonialCard({ t, accent }: { t: Testimonial; accent: string }) {
           <Image src={IMG} alt={t.author} fill className="object-cover" />
         </div>
         <div className="text-sm">
-          <div className="font-semibold">{t.author}</div>
+          <div className="font-semibold dark:text-black">{t.author}</div>
           <div className="text-gray-500">{t.role}</div>
         </div>
       </div>

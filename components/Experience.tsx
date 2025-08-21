@@ -17,7 +17,7 @@ const DATA: Item[] = [
     end: "Dec 2022",
     role: "Video Creator & Editor",
     blurb:
-      "Creating engaging video content on YouTube, focusing on storytelling and audience connection.",
+      "Produced faceless content across niches, growing the channel to 60k+ subscribers and $20k+ in revenue through YouTube monetization.",
   },
   {
     company: "Mavera",
@@ -26,7 +26,7 @@ const DATA: Item[] = [
     end: "Oct 2024",
     role: "Motion Designer & Animator",
     blurb:
-      "Crafting dynamic motion graphics and animations for a cutting-edge AI platform.",
+      "Crafting dynamic motion graphics and animations for a cutting-edge AI platform. Focused on enhancing user engagement through visually compelling content.",
   },
   {
     company: "Freelance Video Editor",
@@ -35,7 +35,7 @@ const DATA: Item[] = [
     end: "Present",
     role: "Short-Form & YouTube Editor",
     blurb:
-      "Editing short-form content and YouTube videos, enhancing viewer engagement through creative storytelling.",
+      "Edited reels, shorts, promos, and YouTube content for global creators & brands—delivering 300+ edits, boosting retention by 35%, and driving multiple viral campaigns (1M+ views).",
   },
 ];
 
@@ -55,39 +55,43 @@ export default function Experience() {
         </div>
 
         {/* ---------- DESKTOP / TABLET ---------- */}
-        <div className="relative mt-12 hidden md:block">
-          {/* global horizontal line */}
-          <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-gray-200 rounded" />
-
-          <div className="relative flex justify-between gap-16 lg:gap-24 xl:gap-32">
+        {/* Desktop timeline: Top → Mid line & dot → Bottom */}
+        <div className="relative mt-16 hidden md:block">
+          <div className="flex justify-between gap-10 lg:gap-16 xl:gap-20">
             {DATA.map((item, idx) => (
               <div
                 key={idx}
-                className="relative flex-1 text-center max-w-[460px]"
+                className="grid grid-rows-[auto_auto_auto] items-stretch text-center w-full max-w-[460px] px-4"
               >
-                {/* node */}
-                <span
-                  className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full ring-4 ring-white shadow"
-                  style={{ background: idx === 1 ? "#0f172a" : ACCENT }}
-                />
-
-                {/* WHERE (top) */}
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">
+                {/* TOP (Where) */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     {item.company}
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     {item.city} • {item.start} – {item.end ?? "Present"}
                   </p>
                 </div>
 
-                {/* WHAT (bottom) */}
-                <div className="mt-30">
-                  <h4 className="text-base font-medium text-gray-800">
+                {/* MIDDLE (line + node), always exactly between top & bottom */}
+                <div className="relative h-10 my-0 flex items-center justify-center">
+                  {/* the horizontal line for this item */}
+                  <div className="absolute left-0 right-0 h-[2px] bg-gray-200 dark:bg-white/15 rounded" />
+
+                  {/* the node */}
+                  <span
+                    className="relative z-10 w-5 h-5 rounded-full ring-4 ring-white dark:ring-slate-900 shadow"
+                    style={{ background: idx === 1 ? "#0f172a" : ACCENT }}
+                  />
+                </div>
+
+                {/* BOTTOM (What) */}
+                <div className="mt-6">
+                  <h4 className="text-base font-medium text-gray-800 dark:text-gray-200">
                     {item.role}
                   </h4>
                   {item.blurb && (
-                    <p className="mt-2 text-sm text-gray-600 max-w-[42ch] mx-auto leading-relaxed">
+                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 max-w-[42ch] mx-auto leading-relaxed">
                       {item.blurb}
                     </p>
                   )}
