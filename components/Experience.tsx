@@ -19,15 +19,7 @@ const DATA: Item[] = [
     blurb:
       "Produced faceless content across niches, growing the channel to 60k+ subscribers and $20k+ in revenue through YouTube monetization.",
   },
-  {
-    company: "Mavera",
-    city: "Remote",
-    start: "Sep 2024",
-    end: "Oct 2024",
-    role: "Motion Designer & Animator",
-    blurb:
-      "Crafting dynamic motion graphics and animations for a cutting-edge AI platform. Focused on enhancing user engagement through visually compelling content.",
-  },
+
   {
     company: "Freelance Video Editor",
     city: "Remote",
@@ -36,6 +28,15 @@ const DATA: Item[] = [
     role: "Short-Form & YouTube Editor",
     blurb:
       "Edited reels, shorts, promos, and YouTube content for global creators & brands—delivering 300+ edits, boosting retention by 35%, and driving multiple viral campaigns (1M+ views).",
+  },
+  {
+    company: "Mavera",
+    city: "Remote",
+    start: "Sep 2024",
+    end: "Oct 2024",
+    role: "Motion Designer & Animator",
+    blurb:
+      "Crafting dynamic motion graphics and animations for a cutting-edge AI platform. Focused on enhancing user engagement through visually compelling content.",
   },
 ];
 
