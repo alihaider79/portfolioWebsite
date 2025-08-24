@@ -11,8 +11,8 @@ type Project = {
   subtitle?: string;
   tags: string[];
   year: string;
-  image: string;
-  videoUrl?: string;
+  image: string; // poster/thumbnail from /public
+  videoUrl?: string; // local video from /public/videos
   href: string;
   featured?: boolean;
   description?: string;
@@ -20,80 +20,72 @@ type Project = {
 
 const PROJECTS: Project[] = [
   {
-    title: "Cinetstox Trading UX",
-    subtitle: "Real-time flows for traders",
+    title: "Podcast Clips Reel",
+    subtitle: "Hook-first edits for retention",
     description:
-      "Designed a high-signal trading interface with real-time feedback and a modular design system.",
-    tags: ["Product", "Dashboards"],
-    year: "2024",
-    image:
-      "https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1600&auto=format&fit=crop",
-    videoUrl: "https://filesamples.com/samples/video/mp4/sample_960x540.mp4",
-    href: "/project/cinetstox",
-    featured: true,
-  },
-  {
-    title: "Sugee Onboarding",
-    subtitle: "Conversion-focused onboarding",
-    description:
-      "Streamlined onboarding with progressive disclosure and personalized paths.",
-    tags: ["Mobile", "UX"],
-    year: "2023",
-    image:
-      "https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?q=80&w=1600&auto=format&fit=crop",
-    videoUrl: "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
-    href: "/project/sugee-onboarding",
-  },
-  {
-    title: "Cognizant Analytics",
-    subtitle: "Complex data, simple decisions",
-    description:
-      "A scalable analytics suite with a unified component system and crisp data viz.",
-    tags: ["Product", "Data Viz"],
-    year: "2022",
-    image:
-      "https://images.unsplash.com/photo-1543286386-713bdd548da4?q=80&w=1600&auto=format&fit=crop",
-    videoUrl:
-      "https://filesamples.com/samples/video/mp4/sample_960x400_ocean_with_audio.mp4",
-    href: "/project/cognizant-analytics",
-    featured: true,
-  },
-  {
-    title: "Brand Refresh",
-    subtitle: "Minimal identity system",
-    description:
-      "A light identity refresh with typographic rhythm and flexible grid rules.",
-    tags: ["Branding", "Visual"],
-    year: "2024",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop",
-    videoUrl: "https://filesamples.com/samples/video/mp4/sample_640x360.mp4",
-    href: "/project/brand-refresh",
-  },
-  {
-    title: "Portfolio Engine",
-    subtitle: "Fast, content-first site",
-    description:
-      "A Next.js foundation with content-first architecture and blazing performance.",
-    tags: ["Web", "Next.js"],
+      "A montage of high-retention clips with tight pacing, captions, and on-brand graphics.",
+    tags: ["Product", "Shorts"],
     year: "2025",
-    image:
-      "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1600&auto=format&fit=crop",
-    videoUrl: "https://filesamples.com/samples/video/mp4/sample_960x540.mp4",
-    href: "/project/portfolio-engine",
+    image: "/thumbnails/vid1.jpeg", // put this file in /public/thumbnails
+    videoUrl: "/videos/ExtraSamples/vid1.mp4", // put this file in /public/videos
+    href: "/project/podcast-clips-reel",
+    featured: true,
   },
   {
-    title: "Usability Lab",
-    subtitle: "Research repository & insights",
+    title: "UGC Ad — Fitness",
+    subtitle: "30s conversion-focused spot",
     description:
-      "Centralized research repository with tagging, insights, and replay.",
-    tags: ["Research", "Ops"],
+      "UGC-style concept with callouts, SFX timing, and fast whitespace rhythm for CTR.",
+    tags: ["Ads", "UGC"],
+    year: "2025",
+    image: "/thumbnails/vid1.jpeg",
+    videoUrl: "/videos/Editingskooledit/vid1.mp4",
+    href: "/project/ugc-fitness",
+  },
+  {
+    title: "Logo Sting (3D)",
+    subtitle: "Simple Blender + AE polish",
+    description:
+      "Light 3D motion with AE title treatment and subtle sound design.",
+    tags: ["Motion", "3D"],
     year: "2024",
-    image:
-      "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=1600&auto=format&fit=crop",
-    videoUrl:
-      "https://filesamples.com/samples/video/mp4/sample_960x400_ocean_with_audio.mp4",
-    href: "/project/usability-lab",
+    image: "/thumbnails/vid1.jpeg",
+    videoUrl: "/videos/ExtraSamples/vid2.mp4",
+    href: "/project/logo-sting",
+    featured: true,
+  },
+  {
+    title: "Channel Refresh",
+    subtitle: "Color, pacing, and titles",
+    description:
+      "Rebuilt templates and presets to compress the idea→publish cycle to hours.",
+    tags: ["Web", "Templates"],
+    year: "2025",
+    image: "/thumbnails/vid1.jpeg",
+    videoUrl: "/videos/logoAnimation/vid1.mp4",
+    href: "/project/channel-refresh",
+  },
+  {
+    title: "Explainer Snippet",
+    subtitle: "30–45s product walkthrough",
+    description:
+      "Scripted highlight cut with clear VO, captions, and beat-matched transitions.",
+    tags: ["Explainer", "Product"],
+    year: "2024",
+    image: "/thumbnails/vid1.jpeg",
+    videoUrl: "/videos/logoAnimation/vid2.mp4",
+    href: "/project/explainer-snippet",
+  },
+  {
+    title: "Onboarding Micro-Flow",
+    subtitle: "UX motion prototype",
+    description:
+      "Micro-interactions for frictionless onboarding; crisp, intentional motion.",
+    tags: ["UX", "Prototype"],
+    year: "2024",
+    image: "/thumbnails/vid1.jpeg",
+    videoUrl: "/videos/logoAnimation/vid3.mp4",
+    href: "/project/onboarding-flow",
   },
 ];
 
@@ -350,6 +342,7 @@ function ProjectModal({
               controls
               playsInline
               autoPlay
+              preload="metadata"
               className="w-full max-h-[60vh] object-contain rounded-t-xl"
             />
           ) : (
@@ -357,6 +350,7 @@ function ProjectModal({
               src={project.image}
               alt={project.title}
               className="w-full max-h-[60vh] object-contain rounded-t-xl"
+              loading="lazy"
             />
           )}
         </div>
@@ -385,6 +379,17 @@ function ProjectModal({
               {project.description}
             </p>
           )}
+
+          {/* Optional external link to detail page */}
+          <div className="mt-4">
+            <Link
+              href={project.href}
+              className="inline-flex items-center text-sm font-medium hover:underline"
+              style={{ color: ACCENT }}
+            >
+              View project →
+            </Link>
+          </div>
         </div>
       </div>
     </div>

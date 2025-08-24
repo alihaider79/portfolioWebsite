@@ -25,7 +25,7 @@ const STEPS: Step[] = [
     ],
   },
   {
-    title: "Leveling Up (2025– Onwards)",
+    title: "Leveling Up (2024– Onwards)",
     blurb:
       "Switched to Adobe Premiere Pro for pro workflows (multi-track, proxies, color).",
     bullets: [
