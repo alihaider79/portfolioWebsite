@@ -16,33 +16,46 @@ type Step = {
 
 const STEPS: Step[] = [
   {
-    title: "Getting Started",
-    blurb:
-      "First design wins with small teams—lots of learning, momentum, and quick iteration.",
+    title: "Getting Started (2025 · College)",
+    blurb: "Launched a faceless YouTube channel cutting clips from podcasts.",
     bullets: [
-      "Shipped first real features",
-      "Learned research → design → dev handoff",
-      "Built confidence in UX decisions",
+      "Grew to 60k+ subscribers in 6 months",
+      "Monetized quickly: $1,500+ in the first 3 months",
+      "Tools: Filmora to learn editing fundamentals, fast turnaround",
     ],
   },
   {
-    title: "Systems & Scale",
+    title: "Leveling Up (2025– Onwards)",
     blurb:
-      "Introduced shared components, cleaner flows, and better collaboration across teams.",
+      "Switched to Adobe Premiere Pro for pro workflows (multi-track, proxies, color).",
     bullets: [
-      "Design system v1 across 3 products",
-      "Onboarding friction reduced",
-      "Partnered tightly with engineering",
+      "Added After Effects for motion graphics, lower-thirds, and title animations",
+      "Explored Blender (basics) for simple 3D scenes and logo stings",
+      "Built systems for idea → cut → polish → publish in hours, not days",
+      "Worked 10+ months on Fiverr, collaborating with clients across the world",
+      "Delivered 2D/3D animation, short-form reels, UGC ads, and podcast clip packages",
     ],
   },
   {
     title: "Impact & Outcomes",
     blurb:
-      "Led projects where metrics mattered. Fast feedback loops and crisp interface quality.",
+      "Helped creators and brands grow audiences, test ideas, and ship content faster.",
     bullets: [
-      "KPIs moved in 6 weeks",
-      "Shorter iteration cycles",
-      "Delight + clarity in shipped work",
+      "Faster iteration cycles through templates, presets, and motion libraries",
+      "Shipped content with clean color, crisp audio, and story-first cuts",
+      "Freelance & Global Clients",
+    ],
+  },
+  {
+    title: "Skills & Tools",
+    blurb:
+      "Consistent watch-time improvements with hook-first edits and tighter pacing.",
+    bullets: [
+      "Editing: Premiere Pro, Filmora (early)",
+      "Motion: After Effects (titles, transitions, callouts), Blender (basic 3D)",
+      "Audio: cleanup, SFX timing, music selection",
+      "Formats: Shorts/Reels/TikTok, YouTube videos, ads, podcast clips",
+      "Extras: subtitles/captions, brand kits, deliverables in multiple aspect ratios",
     ],
   },
 ];
@@ -52,32 +65,30 @@ type Testimonial = {
   quote: string;
   author: string;
   role: string;
+  image: string;
 };
 
 const TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      "Thoughtful research, crisp UI, and a steady hand under pressure. We shipped faster and the metrics followed.",
-    author: "A. Khan",
-    role: "Product Lead, Fintech",
+      "Good job, that was a brilliant move to re-edit the clip. where I’m teaching the same thing haha, LOVED IT!",
+    author: "Saifullah Khan",
+    role: "The Editing Skool",
+    image: "/saif.jpeg",
   },
   {
     quote:
-      "Pragmatic and principled. Our onboarding friction dropped meaningfully after his work.",
-    author: "S. Mehta",
-    role: "Head of Growth, SaaS",
+      "Their video editing turned my raw footage into a seamless, professional story that truly captured the vision.",
+    author: "Vinay Goyal",
+    role: "Canada",
+    image: "/viny3.jpeg",
   },
   {
     quote:
-      "Took a mess of requirements and turned it into a product we’re proud to demo.",
-    author: "N. Iqbal",
-    role: "Founder",
-  },
-  {
-    quote:
-      "Clear thinking meets tasteful execution. Strong partner for fast-moving teams.",
-    author: "R. Patel",
-    role: "Engineering Manager",
+      "I liked your style and think it could be a strong fit with what we’re building, so wanted to reach out.",
+    author: "shahakar khan",
+    role: "Podcutz.co.uk",
+    image: "/shah.jpeg",
   },
 ];
 
@@ -96,8 +107,8 @@ export default function JourneyPage() {
           </span>
         </h1>
         <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
-          A story about experiments, momentum, and teams who helped along the
-          way.
+          A story about experiments, momentum, and the people who helped along
+          the way.
         </p>
         <div
           className="mt-6 h-1.5 w-28 mx-auto rounded-full"
@@ -203,15 +214,21 @@ function JourneySwitcher({ accent }: { accent: string }) {
             accent={accent}
           />
           <Dot
-            top="50%"
+            top="33%"
             active={active === 1}
             onClick={() => setActive(1)}
             accent={accent}
           />
           <Dot
-            top="100%"
+            top="66%"
             active={active === 2}
             onClick={() => setActive(2)}
+            accent={accent}
+          />
+          <Dot
+            top="99%"
+            active={active === 3}
+            onClick={() => setActive(3)}
             accent={accent}
           />
         </div>
@@ -221,7 +238,7 @@ function JourneySwitcher({ accent }: { accent: string }) {
       <div className="relative">
         {/* Mobile dots */}
         <div className="md:hidden flex items-center justify-center gap-3 mb-4">
-          {[0, 1, 2].map((i) => (
+          {[0, 1, 2, 3].map((i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
@@ -309,7 +326,7 @@ function StepContent({ index, accent }: { index: number; accent: string }) {
 
 /* ----------------------------- Testimonials ---------------------------- */
 /* Single carousel (snap) on all screens, auto-scroll every 3s,
-   glass arrows on desktop, mobile-only dots, extra mobile spacing. */
+   mobile-only dots, extra mobile spacing. */
 function Testimonials({ accent }: { accent: string }) {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const [paused, setPaused] = useState(false);
@@ -402,22 +419,6 @@ function Testimonials({ accent }: { accent: string }) {
     };
   }, []);
 
-  // Arrows (desktop)
-  const goLeft = () => {
-    setIndex((prev) => {
-      const next = Math.max(0, prev - 1);
-      scrollToIndex(next);
-      return next;
-    });
-  };
-  const goRight = () => {
-    setIndex((prev) => {
-      const next = Math.min(TESTIMONIALS.length - 1, prev + 1);
-      scrollToIndex(next);
-      return next;
-    });
-  };
-
   return (
     <div className="mt-6 lg:mt-8">
       <div className="relative">
@@ -440,22 +441,6 @@ function Testimonials({ accent }: { accent: string }) {
             ))}
           </div>
         </div>
-
-        {/* Glass arrows (desktop only) */}
-        <button
-          onClick={goLeft}
-          aria-label="Previous testimonial"
-          className="hidden lg:flex absolute left-2 top-1/2 -translate-y-1/2 size-10 rounded-full border border-white/60 bg-white/30 backdrop-blur-md shadow hover:bg-white/50 dark:text-black transition"
-        >
-          <ChevronLeft className="m-auto" />
-        </button>
-        <button
-          onClick={goRight}
-          aria-label="Next testimonial"
-          className="hidden lg:flex absolute right-2 top-1/2 -translate-y-1/2 size-10 rounded-full border border-white/60 bg-white/30 backdrop-blur-md shadow hover:bg-white/50 dark:text-black transition"
-        >
-          <ChevronRight className="m-auto" />
-        </button>
       </div>
 
       {/* Dots (mobile only) */}
@@ -482,7 +467,12 @@ function TestimonialCard({ t, accent }: { t: Testimonial; accent: string }) {
       <p className="text-gray-800 leading-relaxed">“{t.quote}”</p>
       <div className="mt-4 flex items-center gap-3">
         <div className="relative size-10 rounded-full overflow-hidden ring-2 ring-white shadow">
-          <Image src={IMG} alt={t.author} fill className="object-cover" />
+          <Image
+            src={t.image} // ✅ using the testimonial's image
+            alt={t.author}
+            fill
+            className="object-cover"
+          />
         </div>
         <div className="text-sm">
           <div className="font-semibold dark:text-black">{t.author}</div>
