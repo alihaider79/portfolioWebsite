@@ -16,7 +16,7 @@ type Step = {
 
 const STEPS: Step[] = [
   {
-    title: "Getting Started (2025 · College)",
+    title: "Getting Started (2020 · College)",
     blurb: "Launched a faceless YouTube channel cutting clips from podcasts.",
     bullets: [
       "Grew to 60k+ subscribers in 6 months",
