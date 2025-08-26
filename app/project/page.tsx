@@ -6,40 +6,78 @@ import { X } from "lucide-react";
 
 const ACCENT = "#F28A2E";
 
+/* ---------- helpers for video types ---------- */
+function isYouTubeUrl(url?: string) {
+  if (!url) return false;
+  return /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//i.test(url);
+}
+
+function getYouTubeId(url: string): string | null {
+  try {
+    const u = new URL(url);
+    // youtu.be/<id>
+    if (u.hostname.includes("youtu.be")) {
+      return u.pathname.replace("/", "") || null;
+    }
+    // youtube.com/watch?v=<id>
+    if (u.hostname.includes("youtube.com")) {
+      const v = u.searchParams.get("v");
+      if (v) return v;
+      // youtube.com/embed/<id>
+      const parts = u.pathname.split("/");
+      const idx = parts.findIndex((p) => p === "embed");
+      if (idx >= 0 && parts[idx + 1]) return parts[idx + 1];
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function getYouTubeEmbedSrc(url: string) {
+  const id = getYouTubeId(url);
+  if (!id) return null;
+  // Removed "mute=1"
+  return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+}
+
+/* ---------- types ---------- */
 type Project = {
   title: string;
   subtitle?: string;
   tags: string[];
   year: string;
   image: string; // poster/thumbnail from /public
-  videoUrl?: string; // local video from /public/videos
+  videoUrl?: string; // local video from /public/videos OR external (YouTube, CDN)
   href: string;
   featured?: boolean;
   description?: string;
 };
 
+/* ---------- data ---------- */
 const PROJECTS: Project[] = [
   {
-    title: "Podcast Clips Reel",
+    title: "Palaros",
     subtitle: "Hook-first edits for retention",
     description:
       "A montage of high-retention clips with tight pacing, captions, and on-brand graphics.",
     tags: ["Product", "Shorts"],
     year: "2025",
-    image: "/thumbnails/vid1.jpeg", // put this file in /public/thumbnails
-    videoUrl: "/videos/ExtraSamples/vid1.mp4", // put this file in /public/videos
+    image: "/thumbnails/vid1.jpeg",
+    // replaced with your YouTube link:
+    videoUrl: "https://youtu.be/pfLiRD3_siY?si=EFYWRJFS14hFuiJr",
     href: "/project/podcast-clips-reel",
     featured: true,
   },
   {
-    title: "UGC Ad — Fitness",
+    title: "Mavera",
     subtitle: "30s conversion-focused spot",
     description:
       "UGC-style concept with callouts, SFX timing, and fast whitespace rhythm for CTR.",
     tags: ["Ads", "UGC"],
     year: "2025",
     image: "/thumbnails/vid1.jpeg",
-    videoUrl: "/videos/Editingskooledit/vid1.mp4",
+    videoUrl: "https://youtu.be/pfvlaDm6clY?si=Ef_kiWDCoJBZTvQ9",
     href: "/project/ugc-fitness",
   },
   {
@@ -89,6 +127,7 @@ const PROJECTS: Project[] = [
   },
 ];
 
+/* ---------- component ---------- */
 export default function ProjectsGallery() {
   const allTags = useMemo(() => {
     const set = new Set<string>(["All"]);
@@ -296,6 +335,11 @@ function ProjectModal({
     if (e.target === e.currentTarget) onClose();
   };
 
+  const youTubeEmbed =
+    project.videoUrl && isYouTubeUrl(project.videoUrl)
+      ? getYouTubeEmbedSrc(project.videoUrl)
+      : null;
+
   return (
     <div
       onClick={handleBackdrop}
@@ -336,15 +380,27 @@ function ProjectModal({
         {/* Media */}
         <div className="bg-black">
           {project.videoUrl ? (
-            <video
-              src={project.videoUrl}
-              poster={project.image}
-              controls
-              playsInline
-              autoPlay
-              preload="metadata"
-              className="w-full max-h-[60vh] object-contain rounded-t-xl"
-            />
+            youTubeEmbed ? (
+              <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
+                <iframe
+                  src={youTubeEmbed}
+                  title={project.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full rounded-t-xl"
+                />
+              </div>
+            ) : (
+              <video
+                src={project.videoUrl}
+                poster={project.image}
+                controls
+                playsInline
+                autoPlay
+                preload="metadata"
+                className="w-full max-h-[60vh] object-contain rounded-t-xl"
+              />
+            )
           ) : (
             <img
               src={project.image}
