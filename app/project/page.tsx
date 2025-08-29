@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { X } from "lucide-react";
 
 const ACCENT = "#F28A2E";
@@ -9,24 +8,47 @@ const ACCENT = "#F28A2E";
 /* ---------- helpers for video types ---------- */
 function isYouTubeUrl(url?: string) {
   if (!url) return false;
-  return /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//i.test(url);
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, "");
+    return (
+      host === "youtube.com" || host === "m.youtube.com" || host === "youtu.be"
+    );
+  } catch {
+    return false;
+  }
 }
 
 function getYouTubeId(url: string): string | null {
   try {
     const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, "");
+    const path = u.pathname.replace(/\/+$/, "");
+
     // youtu.be/<id>
-    if (u.hostname.includes("youtu.be")) {
-      return u.pathname.replace("/", "") || null;
+    if (host === "youtu.be") {
+      const id = path.slice(1);
+      return id || null;
     }
-    // youtube.com/watch?v=<id>
-    if (u.hostname.includes("youtube.com")) {
+
+    if (host === "youtube.com" || host === "m.youtube.com") {
+      // watch?v=<id>
       const v = u.searchParams.get("v");
       if (v) return v;
-      // youtube.com/embed/<id>
-      const parts = u.pathname.split("/");
-      const idx = parts.findIndex((p) => p === "embed");
-      if (idx >= 0 && parts[idx + 1]) return parts[idx + 1];
+
+      const parts = path.split("/").filter(Boolean);
+
+      // /embed/<id>
+      const embedIdx = parts.indexOf("embed");
+      if (embedIdx >= 0 && parts[embedIdx + 1]) return parts[embedIdx + 1];
+
+      // /shorts/<id>
+      const shortsIdx = parts.indexOf("shorts");
+      if (shortsIdx >= 0 && parts[shortsIdx + 1]) return parts[shortsIdx + 1];
+
+      // /live/<id> (optional)
+      const liveIdx = parts.indexOf("live");
+      if (liveIdx >= 0 && parts[liveIdx + 1]) return parts[liveIdx + 1];
     }
     return null;
   } catch {
@@ -37,93 +59,120 @@ function getYouTubeId(url: string): string | null {
 function getYouTubeEmbedSrc(url: string) {
   const id = getYouTubeId(url);
   if (!id) return null;
-  // Removed "mute=1"
   return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+}
+
+function isYouTubeShorts(url?: string) {
+  if (!url) return false;
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, "");
+    const parts = u.pathname.split("/").filter(Boolean);
+    return (
+      (host === "youtube.com" || host === "m.youtube.com") &&
+      parts[0] === "shorts" &&
+      !!parts[1]
+    );
+  } catch {
+    return false;
+  }
 }
 
 /* ---------- types ---------- */
 type Project = {
   title: string;
-  subtitle?: string;
   tags: string[];
   year: string;
   image: string; // poster/thumbnail from /public
-  videoUrl?: string; // local video from /public/videos OR external (YouTube, CDN)
+  videoUrl?: string; // local file OR external (YouTube/CDN)
   href: string;
   featured?: boolean;
-  description?: string;
 };
 
 /* ---------- data ---------- */
 const PROJECTS: Project[] = [
   {
     title: "Palaros",
-    subtitle: "Hook-first edits for retention",
-    description:
-      "A montage of high-retention clips with tight pacing, captions, and on-brand graphics.",
     tags: ["Product", "Shorts"],
     year: "2025",
     image: "/thumbnails/vid1.jpeg",
-    // replaced with your YouTube link:
     videoUrl: "https://youtu.be/pfLiRD3_siY?si=EFYWRJFS14hFuiJr",
     href: "/project/podcast-clips-reel",
     featured: true,
   },
   {
     title: "Mavera",
-    subtitle: "30s conversion-focused spot",
-    description:
-      "UGC-style concept with callouts, SFX timing, and fast whitespace rhythm for CTR.",
-    tags: ["Ads", "UGC"],
+    tags: ["SAAS", "Animation"],
     year: "2025",
-    image: "/thumbnails/vid1.jpeg",
+    image: "/thumbnails/vid2.png",
     videoUrl: "https://youtu.be/pfvlaDm6clY?si=Ef_kiWDCoJBZTvQ9",
     href: "/project/ugc-fitness",
   },
   {
-    title: "Logo Sting (3D)",
-    subtitle: "Simple Blender + AE polish",
-    description:
-      "Light 3D motion with AE title treatment and subtle sound design.",
+    title: "Theyfy",
     tags: ["Motion", "3D"],
     year: "2024",
     image: "/thumbnails/vid1.jpeg",
-    videoUrl: "/videos/ExtraSamples/vid2.mp4",
+    videoUrl: "https://youtu.be/pfvlaDm6clY?si=Ef_kiWDCoJBZTvQ9",
     href: "/project/logo-sting",
     featured: true,
   },
+  // --- Your Shorts list (each as its own item) ---
   {
-    title: "Channel Refresh",
-    subtitle: "Color, pacing, and titles",
-    description:
-      "Rebuilt templates and presets to compress the idea→publish cycle to hours.",
-    tags: ["Web", "Templates"],
+    title: "Short: 1",
+    tags: ["Shorts"],
     year: "2025",
-    image: "/thumbnails/vid1.jpeg",
-    videoUrl: "/videos/logoAnimation/vid1.mp4",
-    href: "/project/channel-refresh",
+    image: "/thumbnails/vid3.png",
+    videoUrl: "https://www.youtube.com/shorts/ATMFe0PL0ow",
+    href: "/project/short-ATMFe0PL0ow",
   },
   {
-    title: "Explainer Snippet",
-    subtitle: "30–45s product walkthrough",
-    description:
-      "Scripted highlight cut with clear VO, captions, and beat-matched transitions.",
-    tags: ["Explainer", "Product"],
-    year: "2024",
-    image: "/thumbnails/vid1.jpeg",
-    videoUrl: "/videos/logoAnimation/vid2.mp4",
-    href: "/project/explainer-snippet",
+    title: "Short: 2",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/vid3.png",
+    videoUrl: "https://www.youtube.com/shorts/hwzAUim-2OQ",
+    href: "/project/short-hwzAUim-2OQ",
   },
   {
-    title: "Onboarding Micro-Flow",
-    subtitle: "UX motion prototype",
-    description:
-      "Micro-interactions for frictionless onboarding; crisp, intentional motion.",
-    tags: ["UX", "Prototype"],
-    year: "2024",
-    image: "/thumbnails/vid1.jpeg",
-    videoUrl: "/videos/logoAnimation/vid3.mp4",
-    href: "/project/onboarding-flow",
+    title: "Short: 3",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/vid3.png",
+    videoUrl: "https://www.youtube.com/shorts/9a2CTXLCR6Q",
+    href: "/project/short-9a2CTXLCR6Q",
+  },
+  {
+    title: "Short: 4",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/vid3.png",
+    videoUrl: "https://www.youtube.com/shorts/lMcwRjbX-Jo",
+    href: "/project/short-lMcwRjbX-Jo",
+  },
+  {
+    title: "Short: 5",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/vid3.png",
+    videoUrl: "https://www.youtube.com/shorts/9H5mYFG_Ba0",
+    href: "/project/short-9H5mYFG_Ba0",
+  },
+  {
+    title: "Short: 6",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/vid3.png",
+    videoUrl: "https://www.youtube.com/shorts/J1k83p7MFco",
+    href: "/project/short-J1k83p7MFco",
+  },
+  {
+    title: "Short: 7",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/vid3.png",
+    videoUrl: "https://www.youtube.com/shorts/kYImms4G7nQ",
+    href: "/project/short-kYImms4G7nQ",
   },
 ];
 
@@ -315,7 +364,7 @@ function Card({ p, onOpen }: { p: Project; onOpen: () => void }) {
   );
 }
 
-/* ----------------- Modal (dark themed) ------------------ */
+/* ----------------- Modal (Shorts = true 9:16, edge-to-edge) ------------------ */
 function ProjectModal({
   project,
   onClose,
@@ -335,39 +384,41 @@ function ProjectModal({
     if (e.target === e.currentTarget) onClose();
   };
 
-  const youTubeEmbed =
-    project.videoUrl && isYouTubeUrl(project.videoUrl)
-      ? getYouTubeEmbedSrc(project.videoUrl)
-      : null;
+  const isYT = project.videoUrl && isYouTubeUrl(project.videoUrl);
+  const isShort = project.videoUrl && isYouTubeShorts(project.videoUrl);
+  const youTubeEmbed = isYT ? getYouTubeEmbedSrc(project.videoUrl!) : null;
+
+  // Base panel styles
+  const basePanel =
+    "relative overflow-hidden shadow-2xl bg-white text-gray-900 border border-gray-200 dark:bg-neutral-900 dark:text-neutral-100 dark:border-white/10 transform transition-all duration-200";
+  const appear = mounted ? "opacity-100 scale-100" : "opacity-0 scale-95";
+
+  // For Shorts we let the media define the panel width by using aspect-ratio and height
+  // Height target: 85vh (adjust if you want). Width auto = height * 9/16.
+  const panelStyle: React.CSSProperties | undefined = isShort
+    ? { width: "auto" }
+    : undefined;
+
+  const panelClasses = isShort
+    ? "rounded-2xl" // no fixed max-w; width comes from 9:16 box below
+    : "w-full max-w-2xl rounded-2xl";
 
   return (
     <div
       onClick={handleBackdrop}
-      className={`fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4
-                  transition-opacity duration-200 ${
-                    mounted ? "opacity-100" : "opacity-0"
-                  }`}
+      className={`fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity duration-200 ${
+        mounted ? "opacity-100" : "opacity-0"
+      }`}
       role="dialog"
       aria-modal="true"
     >
       <div
-        className={`relative w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl
-                    bg-white text-gray-900 border border-gray-200
-                    dark:bg-neutral-900 dark:text-neutral-100 dark:border-white/10
-                    transform transition-all duration-200 ${
-                      mounted ? "opacity-100 scale-100" : "opacity-0 scale-95"
-                    }`}
+        className={`${basePanel} ${panelClasses} ${appear}`}
+        style={panelStyle}
       >
         {/* Header */}
         <div className="px-6 pt-5 pb-4 border-b border-gray-200 dark:border-white/10 flex items-start justify-between">
-          <div>
-            <h3 className="text-xl font-bold">{project.title}</h3>
-            {project.subtitle && (
-              <p className="text-sm text-gray-600 dark:text-neutral-300 mt-0.5">
-                {project.subtitle}
-              </p>
-            )}
-          </div>
+          <h3 className="text-xl font-bold">{project.title}</h3>
           <button
             onClick={onClose}
             aria-label="Close"
@@ -378,19 +429,48 @@ function ProjectModal({
         </div>
 
         {/* Media */}
-        <div className="bg-black">
+        <div className="bg-black flex justify-center">
           {project.videoUrl ? (
             youTubeEmbed ? (
-              <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-                <iframe
-                  src={youTubeEmbed}
-                  title={project.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full rounded-t-xl"
-                />
-              </div>
+              isShort ? (
+                // TRUE 9:16 box: set height, use CSS aspect-ratio so width = height * 9/16
+                <div
+                  className="relative rounded-t-xl overflow-hidden"
+                  style={{
+                    // shorter so header + footer fit on screen
+                    height: "70vh",
+                    // hard cap to never exceed viewport minus ~header/footer space
+                    maxHeight: "calc(100vh - 120px)",
+                    // keep true 9:16; width auto-calculates from height
+                    aspectRatio: "9 / 16",
+                    width: "auto",
+                  }}
+                >
+                  <iframe
+                    src={youTubeEmbed}
+                    title={project.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full"
+                  />
+                </div>
+              ) : (
+                // Normal YouTube (16:9)
+                <div
+                  className="relative w-full"
+                  style={{ paddingTop: "56.25%" }}
+                >
+                  <iframe
+                    src={youTubeEmbed}
+                    title={project.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full rounded-t-xl"
+                  />
+                </div>
+              )
             ) : (
+              // Local / non-YouTube video
               <video
                 src={project.videoUrl}
                 poster={project.image}
@@ -398,14 +478,18 @@ function ProjectModal({
                 playsInline
                 autoPlay
                 preload="metadata"
-                className="w-full max-h-[60vh] object-contain rounded-t-xl"
+                className={`w-full ${
+                  isShort ? "max-h-[85vh] aspect-[9/16]" : "max-h-[60vh]"
+                } object-contain rounded-t-xl`}
               />
             )
           ) : (
             <img
               src={project.image}
               alt={project.title}
-              className="w-full max-h-[60vh] object-contain rounded-t-xl"
+              className={`w-full ${
+                isShort ? "max-h-[85vh] aspect-[9/16]" : "max-h-[60vh]"
+              } object-contain rounded-t-xl`}
               loading="lazy"
             />
           )}
@@ -429,23 +513,7 @@ function ProjectModal({
               ))}
             </div>
           </div>
-
-          {project.description && (
-            <p className="mt-3 text-sm text-gray-700 dark:text-neutral-300 leading-relaxed">
-              {project.description}
-            </p>
-          )}
-
-          {/* Optional external link to detail page */}
-          <div className="mt-4">
-            <Link
-              href={project.href}
-              className="inline-flex items-center text-sm font-medium hover:underline"
-              style={{ color: ACCENT }}
-            >
-              View project →
-            </Link>
-          </div>
+          {/* (subtitle/description intentionally removed) */}
         </div>
       </div>
     </div>
