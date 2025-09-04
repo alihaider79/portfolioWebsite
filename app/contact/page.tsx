@@ -48,7 +48,7 @@ export default function ContactPage() {
                 Available: Freelance & Full-time
               </span>
               <span className="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs">
-                Mumbai, India
+                Rawalpindi, Pakistan
               </span>
             </div>
 
