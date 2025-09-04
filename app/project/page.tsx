@@ -99,7 +99,7 @@ type Project = {
 const PROJECTS: Project[] = [
   {
     title: "Palaros",
-    tags: ["Product", "Shorts"],
+    tags: ["Animation"],
     year: "2025",
     image: "/thumbnails/video.jpeg",
     videoUrl: "https://youtu.be/pfLiRD3_siY?si=EFYWRJFS14hFuiJr",
@@ -116,7 +116,7 @@ const PROJECTS: Project[] = [
   },
   {
     title: "Theyfy Animation Video",
-    tags: ["Motion", "3D"],
+    tags: ["SAAS", "Animation"],
     year: "2024",
     image: "/thumbnails/video.jpeg",
     videoUrl: "https://youtu.be/APiAZx4pSqU",
@@ -125,7 +125,7 @@ const PROJECTS: Project[] = [
   },
   {
     title: "Long form video Intro sample",
-    tags: ["Motion", "3D"],
+    tags: ["Animation"],
     year: "2024",
     image: "/thumbnails/video.jpeg",
     videoUrl: " https://youtu.be/ZBzPu59vKbo",
