@@ -9,7 +9,7 @@ const ACCENT = "#F28A2E";
 function isYouTubeUrl(url?: string) {
   if (!url) return false;
   try {
-    const u = new URL(url);
+    const u = new URL(url.trim());
     const host = u.hostname.replace(/^www\./, "");
     return (
       host === "youtube.com" || host === "m.youtube.com" || host === "youtu.be"
@@ -21,7 +21,7 @@ function isYouTubeUrl(url?: string) {
 
 function getYouTubeId(url: string): string | null {
   try {
-    const u = new URL(url);
+    const u = new URL(url.trim());
     const host = u.hostname.replace(/^www\./, "");
     const path = u.pathname.replace(/\/+$/, "");
 
@@ -46,7 +46,7 @@ function getYouTubeId(url: string): string | null {
       const shortsIdx = parts.indexOf("shorts");
       if (shortsIdx >= 0 && parts[shortsIdx + 1]) return parts[shortsIdx + 1];
 
-      // /live/<id> (optional)
+      // /live/<id>
       const liveIdx = parts.indexOf("live");
       if (liveIdx >= 0 && parts[liveIdx + 1]) return parts[liveIdx + 1];
     }
@@ -56,16 +56,22 @@ function getYouTubeId(url: string): string | null {
   }
 }
 
-function getYouTubeEmbedSrc(url: string) {
+function getYouTubeEmbedSrc(url: string, opts?: { autoplay?: boolean }) {
   const id = getYouTubeId(url);
   if (!id) return null;
-  return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+  const params = new URLSearchParams({
+    autoplay: opts?.autoplay ? "1" : "0",
+    rel: "0",
+    modestbranding: "1",
+    playsinline: "1",
+  });
+  return `https://www.youtube.com/embed/${id}?${params.toString()}`;
 }
 
 function isYouTubeShorts(url?: string) {
   if (!url) return false;
   try {
-    const u = new URL(url);
+    const u = new URL(url.trim());
     const host = u.hostname.replace(/^www\./, "");
     const parts = u.pathname.split("/").filter(Boolean);
     return (
@@ -95,7 +101,7 @@ const PROJECTS: Project[] = [
     title: "Palaros",
     tags: ["Product", "Shorts"],
     year: "2025",
-    image: "/thumbnails/vid1.jpeg",
+    image: "/thumbnails/video.jpeg",
     videoUrl: "https://youtu.be/pfLiRD3_siY?si=EFYWRJFS14hFuiJr",
     href: "/project/podcast-clips-reel",
     featured: true,
@@ -104,74 +110,130 @@ const PROJECTS: Project[] = [
     title: "Mavera",
     tags: ["SAAS", "Animation"],
     year: "2025",
-    image: "/thumbnails/vid2.png",
+    image: "/thumbnails/video.jpeg",
     videoUrl: "https://youtu.be/pfvlaDm6clY?si=Ef_kiWDCoJBZTvQ9",
     href: "/project/ugc-fitness",
   },
   {
-    title: "Theyfy",
+    title: "Theyfy Animation Video",
     tags: ["Motion", "3D"],
     year: "2024",
-    image: "/thumbnails/vid1.jpeg",
-    videoUrl: "https://youtu.be/pfvlaDm6clY?si=Ef_kiWDCoJBZTvQ9",
+    image: "/thumbnails/video.jpeg",
+    videoUrl: "https://youtu.be/APiAZx4pSqU",
     href: "/project/logo-sting",
     featured: true,
   },
+  {
+    title: "Long form video Intro sample",
+    tags: ["Motion", "3D"],
+    year: "2024",
+    image: "/thumbnails/video.jpeg",
+    videoUrl: " https://youtu.be/ZBzPu59vKbo",
+    href: "/project/logo-sting",
+  },
   // --- Your Shorts list (each as its own item) ---
   {
-    title: "Short: 1",
+    title: "Buy FHSA Account in Canada",
     tags: ["Shorts"],
     year: "2025",
-    image: "/thumbnails/vid3.png",
+    image: "/thumbnails/short.jpeg",
     videoUrl: "https://www.youtube.com/shorts/ATMFe0PL0ow",
     href: "/project/short-ATMFe0PL0ow",
   },
   {
-    title: "Short: 2",
+    title: "Why savings are important in our life?",
     tags: ["Shorts"],
     year: "2025",
-    image: "/thumbnails/vid3.png",
+    image: "/thumbnails/short.jpeg",
     videoUrl: "https://www.youtube.com/shorts/hwzAUim-2OQ",
     href: "/project/short-hwzAUim-2OQ",
   },
   {
-    title: "Short: 3",
+    title: "Your first International Client as a video editor!",
     tags: ["Shorts"],
     year: "2025",
-    image: "/thumbnails/vid3.png",
+    image: "/thumbnails/short.jpeg",
     videoUrl: "https://www.youtube.com/shorts/9a2CTXLCR6Q",
     href: "/project/short-9a2CTXLCR6Q",
   },
   {
-    title: "Short: 4",
+    title: "Failure is not everything",
     tags: ["Shorts"],
     year: "2025",
-    image: "/thumbnails/vid3.png",
+    image: "/thumbnails/short.jpeg",
     videoUrl: "https://www.youtube.com/shorts/lMcwRjbX-Jo",
     href: "/project/short-lMcwRjbX-Jo",
   },
   {
-    title: "Short: 5",
+    title: "Success is about becoming the best version of YOU",
     tags: ["Shorts"],
     year: "2025",
-    image: "/thumbnails/vid3.png",
+    image: "/thumbnails/short.jpeg",
     videoUrl: "https://www.youtube.com/shorts/9H5mYFG_Ba0",
     href: "/project/short-9H5mYFG_Ba0",
   },
   {
-    title: "Short: 6",
+    title: "Indian people are cooked",
     tags: ["Shorts"],
     year: "2025",
-    image: "/thumbnails/vid3.png",
+    image: "/thumbnails/short.jpeg",
     videoUrl: "https://www.youtube.com/shorts/J1k83p7MFco",
     href: "/project/short-J1k83p7MFco",
   },
   {
-    title: "Short: 7",
+    title: "Clarity always comes from Within self!",
     tags: ["Shorts"],
     year: "2025",
-    image: "/thumbnails/vid3.png",
+    image: "/thumbnails/short.jpeg",
     videoUrl: "https://www.youtube.com/shorts/kYImms4G7nQ",
+    href: "/project/short-kYImms4G7nQ",
+  },
+  {
+    title: "Clarity always comes from Within self!",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/short.jpeg",
+    videoUrl: "https://www.youtube.com/shorts/kYImms4G7nQ",
+    href: "/project/short-kYImms4G7nQ",
+  },
+  {
+    title: "Thefy Animation Video",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/short.jpeg",
+    videoUrl: "https://www.youtube.com/shorts/PCANxXZgPFc",
+    href: "/project/short-kYImms4G7nQ",
+  },
+  {
+    title: "The real Og Gfx mentor",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/short.jpeg",
+    videoUrl: " https://youtube.com/shorts/xnt1bOANNU8",
+    href: "/project/short-kYImms4G7nQ",
+  },
+  {
+    title: "Protect your childern",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/short.jpeg",
+    videoUrl: "https://youtube.com/shorts/ld3wxLTG9YE",
+    href: "/project/short-kYImms4G7nQ",
+  },
+  {
+    title: "Secret to E-commerce",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/short.jpeg",
+    videoUrl: " https://youtube.com/shorts/m_rRRgtrR7w",
+    href: "/project/short-kYImms4G7nQ",
+  },
+  {
+    title: " Lukas Kroll Marketing Ad",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/short.jpeg",
+    videoUrl: "https://youtube.com/shorts/eJqJsiwKXb8",
     href: "/project/short-kYImms4G7nQ",
   },
 ];
@@ -263,9 +325,10 @@ export default function ProjectsGallery() {
 
       {/* Modal */}
       {openIdx !== null && (
-        <ProjectModal
+        <ProjectLightbox
           project={filtered[openIdx]}
           onClose={() => setOpenIdx(null)}
+          autoplay
         />
       )}
     </>
@@ -364,15 +427,23 @@ function Card({ p, onOpen }: { p: Project; onOpen: () => void }) {
   );
 }
 
-/* ----------------- Modal (Shorts = true 9:16, edge-to-edge) ------------------ */
-function ProjectModal({
+/* ----------------- Lightbox Modal ------------------ */
+function ProjectLightbox({
   project,
   onClose,
+  autoplay = true,
 }: {
   project: Project;
   onClose: () => void;
+  autoplay?: boolean;
 }) {
   const [mounted, setMounted] = useState(false);
+  const isYT = project.videoUrl && isYouTubeUrl(project.videoUrl);
+  const isShort = project.videoUrl && isYouTubeShorts(project.videoUrl);
+  const youTubeEmbed = isYT
+    ? getYouTubeEmbedSrc(project.videoUrl!, { autoplay })
+    : null;
+
   useEffect(() => {
     setMounted(true);
     const onEsc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -380,51 +451,32 @@ function ProjectModal({
     return () => window.removeEventListener("keydown", onEsc);
   }, [onClose]);
 
-  const handleBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) onClose();
-  };
-
-  const isYT = project.videoUrl && isYouTubeUrl(project.videoUrl);
-  const isShort = project.videoUrl && isYouTubeShorts(project.videoUrl);
-  const youTubeEmbed = isYT ? getYouTubeEmbedSrc(project.videoUrl!) : null;
-
-  // Base panel styles
-  const basePanel =
-    "relative overflow-hidden shadow-2xl bg-white text-gray-900 border border-gray-200 dark:bg-neutral-900 dark:text-neutral-100 dark:border-white/10 transform transition-all duration-200";
-  const appear = mounted ? "opacity-100 scale-100" : "opacity-0 scale-95";
-
-  // For Shorts we let the media define the panel width by using aspect-ratio and height
-  // Height target: 85vh (adjust if you want). Width auto = height * 9/16.
-  const panelStyle: React.CSSProperties | undefined = isShort
-    ? { width: "auto" }
-    : undefined;
-
-  const panelClasses = isShort
-    ? "rounded-2xl" // no fixed max-w; width comes from 9:16 box below
-    : "w-full max-w-2xl rounded-2xl";
-
   return (
     <div
-      onClick={handleBackdrop}
-      className={`fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity duration-200 ${
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+      className={`fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity duration-200 ${
         mounted ? "opacity-100" : "opacity-0"
       }`}
       role="dialog"
       aria-modal="true"
+      aria-label={`${project.title} preview`}
     >
       <div
-        className={`${basePanel} ${panelClasses} ${appear}`}
-        style={panelStyle}
+        className={`relative w-full ${
+          isShort ? "max-w-[300px]" : "max-w-2xl"
+        } rounded-2xl overflow-hidden border border-white/10 bg-neutral-950`}
       >
         {/* Header */}
-        <div className="px-6 pt-5 pb-4 border-b border-gray-200 dark:border-white/10 flex items-start justify-between">
-          <h3 className="text-xl font-bold">{project.title}</h3>
+        <div className="flex items-center justify-between px-3 py-2 border-b border-white/10 bg-black/40">
+          <h3 className="text-sm md:text-base font-semibold text-white truncate">
+            {project.title}
+          </h3>
           <button
             onClick={onClose}
             aria-label="Close"
-            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-neutral-800 transition"
+            className="ml-1 p-2 rounded-full hover:bg-white/10 text-white/90"
           >
-            <X className="w-5 h-5 text-gray-500 dark:text-neutral-300" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
@@ -433,54 +485,50 @@ function ProjectModal({
           {project.videoUrl ? (
             youTubeEmbed ? (
               isShort ? (
-                // TRUE 9:16 box: set height, use CSS aspect-ratio so width = height * 9/16
-                <div
-                  className="relative rounded-t-xl overflow-hidden"
-                  style={{
-                    // shorter so header + footer fit on screen
-                    height: "70vh",
-                    // hard cap to never exceed viewport minus ~header/footer space
-                    maxHeight: "calc(100vh - 120px)",
-                    // keep true 9:16; width auto-calculates from height
-                    aspectRatio: "9 / 16",
-                    width: "auto",
-                  }}
-                >
+                // 9:16 without aspect-ratio utility — uses padding-top trick.
+                <div className="flex items-center justify-center p-3 w-full">
+                  <div className="relative w-full" style={{ maxWidth: 260 }}>
+                    {/* 9:16 => 16/9 = 1.777... so paddingTop is 177.78% */}
+                    <div style={{ paddingTop: "177.78%" }} />
+                    <iframe
+                      src={youTubeEmbed}
+                      title={project.title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      className="absolute inset-0 w-full h-full rounded-lg"
+                      style={{ top: 0, left: 0 }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                // 16:9 using padding-top trick (compact)
+                <div className="relative w-full">
+                  <div style={{ paddingTop: "56.25%" }} />
                   <iframe
                     src={youTubeEmbed}
                     title={project.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                     className="absolute inset-0 w-full h-full"
-                  />
-                </div>
-              ) : (
-                // Normal YouTube (16:9)
-                <div
-                  className="relative w-full"
-                  style={{ paddingTop: "56.25%" }}
-                >
-                  <iframe
-                    src={youTubeEmbed}
-                    title={project.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    className="absolute inset-0 w-full h-full rounded-t-xl"
+                    style={{ top: 0, left: 0 }}
                   />
                 </div>
               )
             ) : (
-              // Local / non-YouTube video
+              // Local / non-YouTube
               <video
                 src={project.videoUrl}
                 poster={project.image}
                 controls
                 playsInline
-                autoPlay
+                autoPlay={autoplay}
                 preload="metadata"
-                className={`w-full ${
-                  isShort ? "max-h-[85vh] aspect-[9/16]" : "max-h-[60vh]"
-                } object-contain rounded-t-xl`}
+                className={`mx-auto ${
+                  isShort ? "max-h-[80vh]" : "w-full"
+                } object-contain`}
+                style={
+                  isShort ? { width: 260, height: (260 * 16) / 9 } : undefined
+                }
               />
             )
           ) : (
@@ -488,32 +536,14 @@ function ProjectModal({
               src={project.image}
               alt={project.title}
               className={`w-full ${
-                isShort ? "max-h-[85vh] aspect-[9/16]" : "max-h-[60vh]"
-              } object-contain rounded-t-xl`}
+                isShort ? "max-h-[80vh]" : "max-h-[60vh]"
+              } object-contain`}
+              style={
+                isShort ? { width: 260, height: (260 * 16) / 9 } : undefined
+              }
               loading="lazy"
             />
           )}
-        </div>
-
-        {/* Details */}
-        <div className="px-6 py-5">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs text-gray-500 dark:text-neutral-400">
-              {project.year}
-            </span>
-            <span className="text-gray-300 dark:text-neutral-600">•</span>
-            <div className="flex flex-wrap gap-1.5">
-              {project.tags.map((t, i) => (
-                <span
-                  key={i}
-                  className="px-2 py-0.5 text-[11px] rounded-full bg-gray-100 text-gray-700 dark:bg-neutral-800 dark:text-neutral-200"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-          </div>
-          {/* (subtitle/description intentionally removed) */}
         </div>
       </div>
     </div>
