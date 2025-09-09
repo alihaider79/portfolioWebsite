@@ -1,5 +1,7 @@
 "use client";
+
 import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import {
   Mail,
   MapPin,
@@ -9,9 +11,11 @@ import {
   Youtube,
   MessageCircle,
 } from "lucide-react";
-import { useEffect, useState } from "react";
 
 const ACCENT = "#F28A2E";
+
+// Helper type to allow custom CSS vars in the style prop
+type CSSVars = React.CSSProperties & { ["--d"]?: string };
 
 export default function ContactPage() {
   const [mounted, setMounted] = useState(false);
@@ -240,8 +244,9 @@ function InfoTile({
   const gradientWash =
     "pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300";
 
+  // add a stable .sheen class so the selector works
   const sheenBar =
-    "pointer-events-none absolute -inset-y-8 -left-20 w-24 rotate-12 opacity-0 group-hover:opacity-100";
+    "sheen pointer-events-none absolute -inset-y-8 -left-20 w-24 rotate-12 opacity-0 group-hover:opacity-100";
 
   const content = (
     <>
@@ -297,6 +302,20 @@ function InfoTile({
     </>
   );
 
+  // style objects with typed CSS var
+  const linkStyle: CSSVars = {
+    transform: tilt,
+    animation: `tileIn 600ms ease var(--d, 0ms) forwards`,
+    ["--d"]: `${delayMs}ms`,
+    background: "white",
+  };
+
+  const boxStyle: CSSVars = {
+    transform: tilt,
+    animation: `tileIn 600ms ease var(--d, 0ms) forwards`,
+    ["--d"]: `${delayMs}ms`,
+  };
+
   // Fully clickable: wrap entire tile in Link if href is provided
   if (href) {
     return (
@@ -310,19 +329,12 @@ function InfoTile({
         rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
         aria-label={`${title}: ${value}`}
         className={`${baseClasses} ${hoverFx} ${interactive}`}
-        style={{
-          transform: tilt,
-          animation: `tileIn 600ms ease var(--d, 0ms) forwards`,
-          // stagger entrance
-          ["--d" as any]: `${delayMs}ms`,
-          background: "white",
-        }}
+        style={linkStyle}
         onMouseMove={onMove}
         onMouseLeave={onLeave}
         onMouseEnter={(e) => {
           // retrigger sheen each hover
-          const sheen = (e.currentTarget.querySelector(".sheen") ||
-            e.currentTarget.children[1]) as HTMLElement | null;
+          const sheen = e.currentTarget.querySelector<HTMLElement>(".sheen");
           if (sheen) {
             sheen.style.animation = "none";
             // force reflow
@@ -342,11 +354,7 @@ function InfoTile({
   return (
     <div
       className={`${baseClasses} ${hoverFx} ${interactive}`}
-      style={{
-        transform: tilt,
-        animation: `tileIn 600ms ease var(--d, 0ms) forwards`,
-        ["--d" as any]: `${delayMs}ms`,
-      }}
+      style={boxStyle}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
     >
