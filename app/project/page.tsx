@@ -133,7 +133,7 @@ const PROJECTS: Project[] = [
   },
   // --- Your Shorts list (each as its own item) ---
   {
-    title: "Buy FHSA Account in Canada",
+    title: "Buy FHSA Account in Canada 🔥",
     tags: ["Shorts"],
     year: "2025",
     image: "/thumbnails/short.jpeg",
@@ -141,7 +141,7 @@ const PROJECTS: Project[] = [
     href: "/project/short-ATMFe0PL0ow",
   },
   {
-    title: "Why savings are important in our life?",
+    title: "Why savings are important in our life? 🔥",
     tags: ["Shorts"],
     year: "2025",
     image: "/thumbnails/short.jpeg",
@@ -149,7 +149,7 @@ const PROJECTS: Project[] = [
     href: "/project/short-hwzAUim-2OQ",
   },
   {
-    title: "Your first International Client as a video editor!",
+    title: "Your first International Client as a video editor! 🔥",
     tags: ["Shorts"],
     year: "2025",
     image: "/thumbnails/short.jpeg",
@@ -157,7 +157,7 @@ const PROJECTS: Project[] = [
     href: "/project/short-9a2CTXLCR6Q",
   },
   {
-    title: "Failure is not everything",
+    title: "Failure is not everything 🔥",
     tags: ["Shorts"],
     year: "2025",
     image: "/thumbnails/short.jpeg",
@@ -165,7 +165,7 @@ const PROJECTS: Project[] = [
     href: "/project/short-lMcwRjbX-Jo",
   },
   {
-    title: "Success is about becoming the best version of YOU",
+    title: "Success is about becoming the best version of YOU 🔥",
     tags: ["Shorts"],
     year: "2025",
     image: "/thumbnails/short.jpeg",
@@ -173,7 +173,7 @@ const PROJECTS: Project[] = [
     href: "/project/short-9H5mYFG_Ba0",
   },
   {
-    title: "Indian people are cooked",
+    title: "Indian people are cooked up to 10 years ahead🔥",
     tags: ["Shorts"],
     year: "2025",
     image: "/thumbnails/short.jpeg",
@@ -181,7 +181,7 @@ const PROJECTS: Project[] = [
     href: "/project/short-J1k83p7MFco",
   },
   {
-    title: "Clarity always comes from Within self!",
+    title: "Clarity always comes from Within self! 🔥",
     tags: ["Shorts"],
     year: "2025",
     image: "/thumbnails/short.jpeg",
@@ -189,15 +189,7 @@ const PROJECTS: Project[] = [
     href: "/project/short-kYImms4G7nQ",
   },
   {
-    title: "Clarity always comes from Within self!",
-    tags: ["Shorts"],
-    year: "2025",
-    image: "/thumbnails/short.jpeg",
-    videoUrl: "https://www.youtube.com/shorts/kYImms4G7nQ",
-    href: "/project/short-kYImms4G7nQ",
-  },
-  {
-    title: "Thefy Animation Video",
+    title: "Thefy Animation Video 🔥",
     tags: ["Shorts"],
     year: "2025",
     image: "/thumbnails/short.jpeg",
@@ -205,7 +197,7 @@ const PROJECTS: Project[] = [
     href: "/project/short-kYImms4G7nQ",
   },
   {
-    title: "The real Og Gfx mentor",
+    title: "The real Og Gfx mentor 🔥",
     tags: ["Shorts"],
     year: "2025",
     image: "/thumbnails/short.jpeg",
@@ -213,7 +205,7 @@ const PROJECTS: Project[] = [
     href: "/project/short-kYImms4G7nQ",
   },
   {
-    title: "Protect your childern",
+    title: "Protect your childern from online threats🔥",
     tags: ["Shorts"],
     year: "2025",
     image: "/thumbnails/short.jpeg",
@@ -221,7 +213,7 @@ const PROJECTS: Project[] = [
     href: "/project/short-kYImms4G7nQ",
   },
   {
-    title: "Secret to E-commerce",
+    title: "Secret to E-commerce Success🔥",
     tags: ["Shorts"],
     year: "2025",
     image: "/thumbnails/short.jpeg",
@@ -229,11 +221,43 @@ const PROJECTS: Project[] = [
     href: "/project/short-kYImms4G7nQ",
   },
   {
-    title: " Lukas Kroll Marketing Ad",
+    title: " Lukas Kroll Marketing Ad🔥",
     tags: ["Shorts"],
     year: "2025",
     image: "/thumbnails/short.jpeg",
     videoUrl: "https://youtube.com/shorts/eJqJsiwKXb8",
+    href: "/project/short-kYImms4G7nQ",
+  },
+    {
+    title: " FHSA VS TFSA VS RRSP 🔥",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/short.jpeg",
+    videoUrl: "https://youtube.com/https://www.youtube.com/shorts/IaeaSP2U4m0/eJqJsiwKXb8",
+    href: "/project/short-kYImms4G7nQ",
+  },
+  {
+    title: " What is RRSP 🔥",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/short.jpeg",
+    videoUrl: "https://www.youtube.com/shorts/VzE0WVpn2iE",
+    href: "/project/short-kYImms4G7nQ",
+  },
+  {
+    title: "50 30 20 rule 🔥",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/short.jpeg",
+    videoUrl: "https://www.youtube.com/shorts/zrPQy_N8x2g",
+    href: "/project/short-kYImms4G7nQ",
+  },
+  {
+    title: "POV client needs high CTR videos 🔥",
+    tags: ["Shorts"],
+    year: "2025",
+    image: "/thumbnails/short.jpeg",
+    videoUrl: "https://www.youtube.com/shorts/VH1bqbj3v5A",
     href: "/project/short-kYImms4G7nQ",
   },
 ];

@@ -6,13 +6,13 @@ import { usePathname } from "next/navigation";
 
 const leftLinks = [
   { href: "#home", label: "Home" },
-  { href: "#services", label: "Service" },
+  { href: "#services", label: "Services" },
   { href: "#experience", label: "Work Experience" },
 ];
 
 const rightLinks = [
   { href: "/journey", label: "My Journey" },
-  { href: "/project", label: "Project" },
+  { href: "/project", label: "Projects" },
   { href: "/contact", label: "Contact" },
 ];
 
